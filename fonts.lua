@@ -1,6 +1,6 @@
-local typeface = {  }
+local typeface = {  };
 do
-	typeface.Incompatible	= function() typeface.Denied = true end
+    typeface.Incompatible	= function() typeface.Denied = true end
     isfile                  = isfile or typeface.Incompatible()
     isfolder                = isfolder or typeface.Incompatible()
     writefile               = writefile or typeface.Incompatible()
@@ -103,4 +103,4 @@ function typeface:register(Path, Asset)
     return typeface.typefaces[Name]
 end
 
-return typeface
+return typeface;
