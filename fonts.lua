@@ -1,85 +1,106 @@
-local typeface = {}
-
+local typeface = {  }
 do
-    typeface.incompatible = function() typeface.denied = true end
-    isfile = isfile or typeface.incompatible()
-    isfolder = isfolder or typeface.incompatible()
-    writefile = writefile or typeface.incompatible()
-    makefolder = makefolder or typeface.incompatible()
-    getcustomasset = getcustomasset or typeface.incompatible()
+	typeface.Incompatible	= function() typeface.Denied = true end
+    isfile                  = isfile or typeface.Incompatible()
+    isfolder                = isfolder or typeface.Incompatible()
+    writefile               = writefile or typeface.Incompatible()
+    makefolder              = makefolder or typeface.Incompatible()
+    getcustomasset 			= getcustomasset or typeface.Incompatible()
 end
 
-local http = cloneref and cloneref(game:GetService 'HttpService') or game:GetService 'HttpService'
+local Http = cloneref and cloneref(game:GetService 'HttpService') or game:GetService 'HttpService'
+--
+typeface.typefaces = {  }
+typeface.WeightNum = { 
+	["Thin"] = 100,
 
-typeface.typefaces = {}
-typeface.weightnum = {
-    ["thin"] = 100,
-    ["extralight"] = 200,
-    ["ultralight"] = 200,
-    ["light"] = 300,
-    ["normal"] = 400,
-    ["regular"] = 400,
-    ["medium"] = 500,
-    ["semibold"] = 600,
-    ["demibold"] = 600,
-    ["bold"] = 700,
-    ["extrabold"] = 800,
-    ["ultrabold"] = 900,
-    ["heavy"] = 900
-}
+	["ExtraLight"] = 200, 
+	["UltraLight"] = 200,
 
-function typeface:register(path, asset)
-    asset = asset or {}
-    asset.weight = asset.weight or "regular"
-    asset.style = asset.style or "normal"
-    if not asset.link or not asset.name then 
+	["Light"] = 300,
+
+	["Normal"] = 400,
+	["Regular"] = 400,
+
+	["Medium"] = 500,
+
+	["SemiBold"] = 600,
+	["DemiBold"] = 600,
+
+	["Bold"] = 700,
+
+	["ExtraBold"] = 800,
+
+	["UltraBold"] = 900,
+	["Heavy"] = 900
+};
+
+-- funcs
+function typeface:register(Path, Asset)
+	Asset = Asset or {}
+
+    Asset.weight = Asset.weight or "Regular"
+    Asset.style = Asset.style or "Normal"
+
+    if not Asset.link or not Asset.name then 
         return
     end
-    if typeface.denied then 
+
+	if typeface.Denied then 
         return
     end
-    local directory = string.format("%s/%s", path or "", asset.name)
-    local weight = typeface.weightnum[asset.weight] == 400 and "" or asset.weight
-    local style = string.lower(asset.style) == "normal" and "" or asset.style
-    local name = string.format("%s%s%s", asset.name, weight, style)
-    if not isfolder(directory) then
-        makefolder(directory)
+
+	local Directory = `{ Path or "" }/{ Asset.name }`
+
+    local Weight = typeface.WeightNum[Asset.weight] == 400 and "" or Asset.weight
+    local Style = string.lower(Asset.style) == "normal" and "" or Asset.style
+	local Name = `{ Asset.name }{ Weight }{ Style }`
+
+    if not isfolder(Directory) then
+        makefolder(Directory)
     end
-    if not isfile(string.format("%s/%s.font", directory, name)) then
-        writefile(string.format("%s/%s.font", directory, name), game:HttpGet(asset.link))
-    end
-    if not isfile(string.format("%s/%sFamilies.json", directory, asset.name)) then 
-        local data = { 
-            name = string.format("%s %s", asset.weight, asset.style),
-            weight = typeface.weightnum[asset.weight] or typeface.weightnum[asset.weight:gsub("%s+", "")],
-            style = string.lower(asset.style),
-            assetid = getcustomasset(string.format("%s/%s.font", directory, name))
-        }
-        local jsonfile = http:JSONEncode({ name = name, faces = { data } })
-        writefile(string.format("%s/%sFamilies.json", directory, asset.name), jsonfile)
-    else
-        local registered = false
-        local jsonfile = http:JSONDecode(readfile(string.format("%s/%sFamilies.json", directory, asset.name)))
-        local data = { 
-            name = string.format("%s %s", asset.weight, asset.style),
-            weight = typeface.weightnum[asset.weight] or typeface.weightnum[asset.weight:gsub("%s+", "")],
-            style = string.lower(asset.style),
-            assetid = getcustomasset(string.format("%s/%s.font", directory, name))
-        }
-        for _, v in ipairs(jsonfile.faces) do
-            if v.name == data.name then 
-                registered = true
-                break
-            end
+
+    if not isfile(`{ Directory }/{ Name }.font`) then
+		writefile(`{ Directory }/{ Name }.font`, game:HttpGet(Asset.link))
+	end
+
+    if not isfile(`{ Directory }/{ Asset.name }Families.json`) then 
+		local Data = { 
+			name = `{ Asset.weight } { Asset.style }`,
+			weight = typeface.WeightNum[Asset.weight] or typeface.WeightNum[string.gsub(Asset.weight, "%s+", "")],
+			style = string.lower(Asset.style),
+			assetId = getcustomasset(`{ Directory }/{ Name }.font`)
+		}
+
+		local JSONFile = Http:JSONEncode({ name = Name, faces = { Data } })
+		writefile(`{ Directory }/{ Asset.name }Families.json`, JSONFile)
+	else
+		local Registered = false
+        local JSONFile = Http:JSONDecode(readfile(`{ Directory }/{ Asset.name }Families.json`))
+		local Data = { 
+            name = `{ Asset.weight } { Asset.style }`,
+            weight = typeface.WeightNum[Asset.weight] or typeface.WeightNum[string.gsub(Asset.weight, "%s+", "")],
+            style = string.lower(Asset.style),
+            assetId = getcustomasset(`{ Directory }/{ Name }.font`)
+		}
+
+        for _, v in JSONFile.faces do
+            if v.name == Data.name then Registered = true end
         end
-        if not registered then
-            table.insert(jsonfile.faces, data)
-            jsonfile = http:JSONEncode(jsonfile)
-            writefile(string.format("%s/%sFamilies.json", directory, asset.name), jsonfile)
+
+        if not Registered then
+            table.insert(JSONFile.faces, Data)
+            JSONFile = Http:JSONEncode(JSONFile)
+
+            warn(`Registering { Asset.weight } { Asset.style } typeface to "{ Directory }"...`)
+
+            writefile(`{ Directory }/{ Asset.name }Families.json`, JSONFile)
         end
-    end
-    typeface.typefaces[name] = typeface.typefaces[name] or Font.new(getcustomasset(string.format("%s/%sFamilies.json", directory, asset.name)))
-    return typeface.typefaces[name]
+        
+	end
+
+	typeface.typefaces[Name] = typeface.typefaces[Name] or Font.new(getcustomasset(`{ Directory }/{ Asset.name }Families.json`))
+    return typeface.typefaces[Name]
 end
 
 return typeface
