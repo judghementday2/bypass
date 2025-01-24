@@ -1,79 +1,85 @@
-local fonts = {}
+local typeface = {}
 
 do
-    fonts.Incompatible = function() fonts.Denied = true end
-    isfile = isfile or fonts.Incompatible()
-    isfolder = isfolder or fonts.Incompatible()
-    writefile = writefile or fonts.Incompatible()
-    makefolder = makefolder or fonts.Incompatible()
-    getcustomasset = getcustomasset or fonts.Incompatible()
+    typeface.incompatible = function() typeface.denied = true end
+    isfile = isfile or typeface.incompatible()
+    isfolder = isfolder or typeface.incompatible()
+    writefile = writefile or typeface.incompatible()
+    makefolder = makefolder or typeface.incompatible()
+    getcustomasset = getcustomasset or typeface.incompatible()
 end
 
-local Http = cloneref and cloneref(game:GetService 'HttpService') or game:GetService 'HttpService'
+local http = cloneref and cloneref(game:GetService 'HttpService') or game:GetService 'HttpService'
 
-fonts.fontWeights = {
-    light = 100,
-    extralight = 200,
-    ultralight = 200,
-    normal = 300,
-    regular = 400,
-    semibold = 500,
-    bold = 600,
-    extrabold = 700,
-    heavy = 800
+typeface.typefaces = {}
+typeface.weightnum = {
+    ["thin"] = 100,
+    ["extralight"] = 200,
+    ["ultralight"] = 200,
+    ["light"] = 300,
+    ["normal"] = 400,
+    ["regular"] = 400,
+    ["medium"] = 500,
+    ["semibold"] = 600,
+    ["demibold"] = 600,
+    ["bold"] = 700,
+    ["extrabold"] = 800,
+    ["ultrabold"] = 900,
+    ["heavy"] = 900
 }
 
-function fonts:addFont(directory, fontInfo)
-    fontInfo = fontInfo or {}
-    fontInfo.weight = fontInfo.weight or "regular"
-    fontInfo.style = fontInfo.style or "normal"
-    if not fontInfo.link or not fontInfo.name then 
+function typeface:register(path, asset)
+    asset = asset or {}
+    asset.weight = asset.weight or "regular"
+    asset.style = asset.style or "normal"
+    if not asset.link or not asset.name then 
         return
     end
-    if fonts.Denied then 
+    if typeface.denied then 
         return
     end
-    local folder = string.format("%s/%s", directory or "", fontInfo.name)
-    local weight = fonts.fontWeights[fontInfo.weight] == 400 and "" or fontInfo.weight
-    local style = fontInfo.style:lower() == "normal" and "" or fontInfo.style
-    local fontName = string.format("%s%s%s", fontInfo.name, weight, style)
-    if not isfolder(folder) then 
-        makefolder(folder)
+    local directory = string.format("%s/%s", path or "", asset.name)
+    local weight = typeface.weightnum[asset.weight] == 400 and "" or asset.weight
+    local style = string.lower(asset.style) == "normal" and "" or asset.style
+    local name = string.format("%s%s%s", asset.name, weight, style)
+    if not isfolder(directory) then
+        makefolder(directory)
     end
-    if not isfile(string.format("%s/%s.font", folder, fontName)) then
-        writefile(string.format("%s/%s.font", folder, fontName), game:HttpGet(fontInfo.link))
+    if not isfile(string.format("%s/%s.font", directory, name)) then
+        writefile(string.format("%s/%s.font", directory, name), game:HttpGet(asset.link))
     end
-    if not isfile(string.format("%s/%sData.json", folder, fontInfo.name)) then
-        local fontData = {
-            name = string.format("%s %s", fontInfo.weight, fontInfo.style),
-            weight = fonts.fontWeights[fontInfo.weight] or fonts.fontWeights[fontInfo.weight:gsub("%s+", "")],
-            style = fontInfo.style:lower(),
-            assetid = getcustomasset(string.format("%s/%s.font", folder, fontName))
+    if not isfile(string.format("%s/%sFamilies.json", directory, asset.name)) then 
+        local data = { 
+            name = string.format("%s %s", asset.weight, asset.style),
+            weight = typeface.weightnum[asset.weight] or typeface.weightnum[asset.weight:gsub("%s+", "")],
+            style = string.lower(asset.style),
+            assetid = getcustomasset(string.format("%s/%s.font", directory, name))
         }
-        local jsonData = Http:JSONEncode({ name = fontName, faces = { fontData } })
-        writefile(string.format("%s/%sData.json", folder, fontInfo.name), jsonData)
+        local jsonfile = http:JSONEncode({ name = name, faces = { data } })
+        writefile(string.format("%s/%sFamilies.json", directory, asset.name), jsonfile)
     else
-        local isRegistered = false
-        local jsonData = Http:JSONDecode(readfile(string.format("%s/%sData.json", folder, fontInfo.name)))
-        local fontData = {
-            name = string.format("%s %s", fontInfo.weight, fontInfo.style),
-            weight = fonts.fontWeights[fontInfo.weight] or fonts.fontWeights[fontInfo.weight:gsub("%s+", "")],
-            style = fontInfo.style:lower(),
-            assetid = getcustomasset(string.format("%s/%s.font", folder, fontName))
+        local registered = false
+        local jsonfile = http:JSONDecode(readfile(string.format("%s/%sFamilies.json", directory, asset.name)))
+        local data = { 
+            name = string.format("%s %s", asset.weight, asset.style),
+            weight = typeface.weightnum[asset.weight] or typeface.weightnum[asset.weight:gsub("%s+", "")],
+            style = string.lower(asset.style),
+            assetid = getcustomasset(string.format("%s/%s.font", directory, name))
         }
-        for _, v in ipairs(jsonData.faces) do
-            if v.name == fontData.name then 
-                isRegistered = true 
-                break 
+        for _, v in ipairs(jsonfile.faces) do
+            if v.name == data.name then 
+                registered = true
+                break
             end
         end
-        if not isRegistered then
-            table.insert(jsonData.faces, fontData)
-            jsonData = Http:JSONEncode(jsonData)
-            writefile(string.format("%s/%sData.json", folder, fontInfo.name), jsonData)
+        if not registered then
+            table.insert(jsonfile.faces, data)
+            jsonfile = http:JSONEncode(jsonfile)
+            writefile(string.format("%s/%sFamilies.json", directory, asset.name), jsonfile)
         end
     end
-    return Font.new(getcustomasset(string.format("%s/%sData.json", folder, fontInfo.name)))
+    typeface.typefaces[name] = typeface.typefaces[name] or Font.new(getcustomasset(string.format("%s/%sFamilies.json", directory, asset.name)))
+    return typeface.typefaces[name]
 end
 
-return fonts
+return typeface
