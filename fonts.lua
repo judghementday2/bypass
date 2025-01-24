@@ -91,9 +91,6 @@ function typeface:register(Path, Asset)
         if not Registered then
             table.insert(JSONFile.faces, Data)
             JSONFile = Http:JSONEncode(JSONFile)
-
-            warn(`Registering { Asset.weight } { Asset.style } typeface to "{ Directory }"...`)
-
             writefile(`{ Directory }/{ Asset.name }Families.json`, JSONFile)
         end
         
