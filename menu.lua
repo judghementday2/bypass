@@ -2906,4 +2906,4 @@ do -- open/close
     end);
 end;    
 
-return UI, framework;
+return UI, framework, fonts;
