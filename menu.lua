@@ -2906,4 +2906,4 @@ do -- open/close
     end);
 end;    
 
-return UI, framework, fonts;
+return UI, framework, fonts, found, black_bg, blur_effect;
