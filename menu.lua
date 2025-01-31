@@ -1,18 +1,6 @@
 local framework = loadstring(game:HttpGet("https://pastebin.com/raw/ubWKrWUP", true))();
 --
 do -- checks
-    if (not game:GetService("RunService"):IsRunning()) then
-        repeat game:GetService("RunService").Stepped:Wait() until game:GetService("RunService"):IsRunning();
-    end;
-    --
-    if (not game:IsLoaded()) then
-        repeat game.Loaded:Wait() until game:IsLoaded();
-    end;
-    --
-    if (not game:GetService("NetworkClient")) then
-        repeat game.ChildAdded:Wait() until game:GetService("NetworkClient");
-    end;
-    --
     do -- folders
         if (not isfolder("ENHANCEMENTS")) then
             makefolder("ENHANCEMENTS");
@@ -915,7 +903,7 @@ do -- menu
             local discord_avatar = framework["instance_manager"].new("ImageLabel", {
                 Name = "discord_avatar";
                 BackgroundTransparency = 1;
-                Image = "rbxasset://textures/ui/GuiImagePlaceholder.png";
+                Image = "http://www.roblox.com/asset/?id=79577083778779";
                 BackgroundColor3 = UI.themes.background;
                 BorderColor3 = color3_rgb(0, 0, 0);
                 BorderSizePixel = 0;
@@ -927,24 +915,7 @@ do -- menu
             framework["instance_manager"].new("UICorner", {
                 Parent = discord_avatar;
                 CornerRadius = udim(1, 0);
-            });
-            
-            local discord_decoration = framework["instance_manager"].new("ImageLabel", {
-                Name = "discord_decoration";
-                BackgroundTransparency = 1;
-                Image = "rbxasset://textures/ui/GuiImagePlaceholder.png";
-                BackgroundColor3 = UI.themes.background;
-                BorderColor3 = color3_rgb(0, 0, 0);
-                BorderSizePixel = 0;
-                Size = udim2(0, 55, 0, 55);
-                Position = udim2(0.5, -28, 0.5, -27);  
-                Parent = icon_holder;
-            });
-            
-            framework["instance_manager"].new("UICorner", {
-                Parent = discord_decoration;
-                CornerRadius = udim(1, 0);
-            });            
+            });    
     
             local tabs_holder = framework["instance_manager"].new("Frame", {
                 Name = "tabs_holder";
@@ -955,59 +926,6 @@ do -- menu
                 Size = udim2(0, 80, 0, 500);
                 Parent = background;
             });
-            --
-            local user_info = framework:request_info();
-            local id, hash, decor, _url, _file, _decor_url, _decor_file;
-            --
-            do -- discord
-                if user_info then
-                    id = user_info.id;
-                    hash = user_info.avatar;
-                    decor = user_info.avatar_decoration_data and user_info.avatar_decoration_data.asset;
-        
-                    if id and hash then
-                        _url = "https://cdn.discordapp.com/avatars/" .. id .. "/" .. hash .. ".png";
-                        _file = "ENHANCEMENTS/LOADER/IMAGES/avatar_" .. id .. ".png";
-                    end;
-        
-                    if decor then
-                        _decor_url = "https://cdn.discordapp.com/avatar-decoration-presets/" .. decor .. ".png";
-                        _decor_file = "ENHANCEMENTS/LOADER/IMAGES/avatar-decoration-presets_" .. decor .. ".png";
-                    end;
-                end;
-        
-                if not (writefile and getcustomasset and isfile) then return; end;
-        
-                local function download(_url, _file)
-                    local success, data = pcall(function() return game:HttpGet(_url, true); end);
-                    if success then writefile(_file, data); end;
-                    return success;
-                end;
-        
-                local function load_image(_file)
-                    local success, asset = pcall(function() return getcustomasset(_file); end);
-                    return success and asset or "rbxasset://textures/ui/GuiImagePlaceholder.png";
-                end;
-        
-                do -- loading images
-                    if _url and _file and not isfile(_file) then
-                        local avatar_ok = download(_url, _file);
-                        local decor_ok = not _decor_url or (_decor_file and download(_decor_url, _decor_file));
-                        if not (avatar_ok and decor_ok) then
-                            discord_avatar.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png";
-                            discord_decoration.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png";
-                            discord_decoration.ZIndex = 1;
-                            discord_decoration.Visible = false;
-                            return;
-                        end;
-                    end;
-        
-                    discord_avatar.Image = _file and isfile(_file) and load_image(_file) or "rbxasset://textures/ui/GuiImagePlaceholder.png";
-                    discord_decoration.Image = _decor_file and isfile(_decor_file) and load_image(   _decor_file) or "rbxasset://textures/ui/GuiImagePlaceholder.png";
-                    discord_decoration.ZIndex = decor and 999 or 1;
-                    discord_decoration.Visible = decor and true or false;
-                end;
-            end
             --
             local page_holder = framework["instance_manager"].new("Frame", {
                 Name = "page_holder";
