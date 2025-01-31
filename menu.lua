@@ -886,36 +886,7 @@ do -- menu
                 Position = udim2(0, 80, 0, 0);
                 Size = udim2(0, 1, 1, 0);
                 Parent = background; 
-            });
-    
-            local icon_holder = framework["instance_manager"].new("Frame", {
-                Name = "icon_holder";
-                BackgroundColor3 = UI.themes.background;
-                BorderColor3 = UI.themes.outline;
-                BorderSizePixel = 1;
-                BackgroundTransparency = 0;
-                Size = udim2(0, 80, 0, 80);  
-                Position = udim2(0, 0, 0.840, 0); 
-                Parent = background;
-                ZIndex = 2;
-            });
-            
-            local discord_avatar = framework["instance_manager"].new("ImageLabel", {
-                Name = "discord_avatar";
-                BackgroundTransparency = 1;
-                Image = "http://www.roblox.com/asset/?id=79577083778779";
-                BackgroundColor3 = UI.themes.background;
-                BorderColor3 = color3_rgb(0, 0, 0);
-                BorderSizePixel = 0;
-                Size = udim2(0, 45, 0, 45);
-                Position = udim2(0.5, -23, 0.5, -22);  
-                Parent = icon_holder;
-            });
-            
-            framework["instance_manager"].new("UICorner", {
-                Parent = discord_avatar;
-                CornerRadius = udim(1, 0);
-            });    
+            });  
     
             local tabs_holder = framework["instance_manager"].new("Frame", {
                 Name = "tabs_holder";
@@ -1113,7 +1084,7 @@ do -- menu
             
                 local tab_count = #tabs;
                 local holder_size = page.window.elements.tab_holder.Size.Y.Offset;
-                local adjusted_size = math.max(holder_size - 80, 0); -- ignore the icon_holder gang
+                local adjusted_size = math.max(holder_size, 0);
             
                 if tab_count > 0 and adjusted_size > 0 then
                     local tab_height = adjusted_size / tab_count;
