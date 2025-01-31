@@ -52,20 +52,14 @@ local services = framework["services"];
 local run_service = cloneref(services["RunService"]);
 local players = cloneref(services["players"]);
 local uis = cloneref(services["userInputService"]);
-local stats= cloneref(services["stats"]);
 local tween_service = cloneref(services["tweenService"]);
 local camera = cloneref(services.Workspace["CurrentCamera"]);
 local lighting = cloneref(services["lighting"]);
 -- vars
 local viewport_size = camera["ViewportSize"];
-local place_id = game["PlaceId"];
 local lplr = players["LocalPlayer"];
 local user = lplr["Name"];
 local get_mouse = lplr:GetMouse();
-local fps = stats.Workspace["Heartbeat"];
-local gn = services.MarketplaceService:GetProductInfo(place_id).Name;
-local game_name = gn:gsub("[^%w%s]", ""):gsub("%s+", " "):lower():match("^%s*(.-)%s*$");
-local ping = stats.Network.ServerStatsItem["Data Ping"];
 -- fonts
 local create_font = loadstring(game:HttpGet("https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/fonts.lua"))();
 local fonts = {
@@ -122,33 +116,12 @@ local UI = ({
         fps = 0,
         ping = 0
     },
-    supported_games = {
-        ["Fallen Survival"] = "Fallen Survival",
-        ["Trident Survival"] = "Trident Survival",
-        ["Lone Survival"] = "Lone Survival",
-        ["Phantom Forces"] = "Phantom Forces",
-        ["Rivals"] = "Rivals"
-        --
-    };    
 });
 -- 
 local flags = {};
 UI.__index = UI;
 UI.pages.__index = UI.pages;
 UI.sections.__index = UI.sections;
---
-local found = "Universal";
-do -- game name
-    for key, _ in pairs(UI.supported_games) do
-        local clean_key = key:lower();
-        if clean_key == game_name or game_name:find(clean_key, 1, true) or clean_key:find(game_name, 1, true) then
-            found = key;
-            break;
-        else
-            found = "Universal";
-        end;
-    end;    
-end;
 --
 local black_bg;
 local blur_effect;
