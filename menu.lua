@@ -1,4 +1,4 @@
-local framework = loadstring(game:HttpGet("https://pastebin.com/raw/ubWKrWUP", true))();
+local framework = loadstring(game:HttpGet("https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/framework.lua", true))();
 --
 do -- checks
     do -- folders
@@ -32,7 +32,7 @@ do -- checks
             function LPH_ENCSTR(...) return ... end;
             function LPH_ENCNUM(...) return ... end;
             function LPH_CRASH() return print(debug.traceback()) end;
-    
+
             LRM_IsUserPremium = false;
             LRM_LinkedDiscordID = "1123144940071952394";
             LRM_ScriptName = "visual enhancements";
@@ -60,6 +60,9 @@ local viewport_size = camera["ViewportSize"];
 local lplr = players["LocalPlayer"];
 local user = lplr["Name"];
 local get_mouse = lplr:GetMouse();
+-- modules
+Instance_manager = framework.modules.instance_manager
+signals = framework.modules.signals
 -- fonts
 local create_font = loadstring(game:HttpGet("https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/fonts.lua"))();
 local fonts = {
@@ -92,13 +95,13 @@ local UI = ({
     watermark_gui = nil,
     themes = ({ accent = color3_rgb(131,135,250), risky = color3_rgb(85, 0, 0), background = color3_rgb(7,7,8), outline = color3_rgb(15,15,16), inactive = color3_rgb(69,69,70) }),
     keys = {
-        [Enum.KeyCode.LeftShift] = "L-SHIFT", [Enum.KeyCode.RightShift] = "R-SHIFT", [Enum.KeyCode.LeftControl] = "L-CTRL", 
-        [Enum.KeyCode.RightControl] = "R-CTRL", [Enum.KeyCode.LeftAlt] = "L-ALT", [Enum.KeyCode.RightAlt] = "R-ALT", 
+        [Enum.KeyCode.LeftShift] = "L-SHIFT", [Enum.KeyCode.RightShift] = "R-SHIFT", [Enum.KeyCode.LeftControl] = "L-CTRL",
+        [Enum.KeyCode.RightControl] = "R-CTRL", [Enum.KeyCode.LeftAlt] = "L-ALT", [Enum.KeyCode.RightAlt] = "R-ALT",
         [Enum.KeyCode.Insert] = "INSERT", [Enum.KeyCode.End] = "END", [Enum.KeyCode.PageUp] = "PGUP",
         [Enum.KeyCode.Delete] = "DELETE", [Enum.KeyCode.Home] = "HOME", [Enum.KeyCode.PageDown] = "PGDN",
-        [Enum.UserInputType.MouseButton1] = "MB1", [Enum.UserInputType.MouseButton2] = "MB2", 
+        [Enum.UserInputType.MouseButton1] = "MB1", [Enum.UserInputType.MouseButton2] = "MB2",
         [Enum.UserInputType.MouseButton3] = "MB3",
-    },     
+    },
 
     un_named_flags = 0,
     page_amount = 0,
@@ -117,7 +120,7 @@ local UI = ({
         ping = 0
     },
 });
--- 
+--
 local flags = {};
 UI.__index = UI;
 UI.pages.__index = UI.pages;
@@ -130,7 +133,7 @@ do -- other
         UI.un_named_flags = UI.un_named_flags + 1;
         return string.format("%.14g", UI.un_named_flags);
     end;
-    -- 
+    --
     function UI:RGBA(r, g, b, alpha)
         local rgb = Color3.fromRGB(r, g, b)
         local mt = table.clone(getrawmetatable(rgb))
@@ -148,7 +151,7 @@ do -- other
         setrawmetatable(rgb, mt)
         return rgb
     end
-    -- 
+    --
     function UI:GetConfig()
         local Config = ""
         for Index, Value in pairs(self.flags) do
@@ -263,7 +266,7 @@ do -- other
     end;
     --
     blur_effect = cloneref(Instance.new("BlurEffect", lighting));
-    black_bg = framework["instance_manager"].new("TextButton", {
+    black_bg = Instance_manager.new("TextButton", {
         Name = "bg_effect";
         Text = "";
         AutoButtonColor = false;
@@ -284,15 +287,15 @@ do -- menu
             name = (properties.Name or properties.name or "watermark text | placeholder");
         };
         --
-        local watermark_ui = framework["instance_manager"].new("ScreenGui", {
+        local watermark_ui = Instance_manager.new("ScreenGui", {
             Name = "watermark";
             Parent = cloneref(gethui());
             IgnoreGuiInset = Enum.ScreenInsets.DeviceSafeInsets;
             ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
         });
         UI.watermark_gui = watermark_ui;
-        
-        local outline = framework["instance_manager"].new("Frame", {
+
+        local outline = Instance_manager.new("Frame", {
             Name = "watermark_outline";
             AutomaticSize = Enum.AutomaticSize.X;
             BackgroundColor3 = UI.themes.background;
@@ -305,7 +308,7 @@ do -- menu
             Parent = watermark_ui;
         });
 
-        local Inline = framework["instance_manager"].new("Frame", {
+        local Inline = Instance_manager.new("Frame", {
             Name = "watermark_inline";
             BackgroundColor3 = UI.themes.background;
             BorderSizePixel = 0;
@@ -313,8 +316,8 @@ do -- menu
             Size = udim2(1, -2, 1, -2);
             Parent = outline;
         });
-        
-        local Value = framework["instance_manager"].new("TextLabel", {
+
+        local Value = Instance_manager.new("TextLabel", {
             FontFace = UI.font;
             TextSize = UI.font_size;
             Name = "watermark_text";
@@ -331,19 +334,19 @@ do -- menu
             Size = udim2(0, 0, 1, 0);
             Parent = Inline;
         });
-        
-        local UIPadding = framework["instance_manager"].new("UIPadding", {
+
+        local UIPadding = Instance_manager.new("UIPadding", {
             Name = "UIPadding";
             PaddingLeft = udim(0, 5);
             PaddingRight = udim(0, 5);
             Parent = Value;
         });
-        
+
         -- functions
         function watermark:update_text(NewText)
             Value.Text = NewText;
         end
-    
+
         function watermark:Position(NewPositionX, NewPositionY)
             if NewPositionX ~= nil then
                 self.HorizontalPosition = NewPositionX
@@ -353,11 +356,11 @@ do -- menu
             end
             outline.Position = udim2(self.HorizontalPosition, 0, self.VerticalPosition, 0);
         end
-        
+
         function watermark:SetVisible(State)
             outline.Visible = State;
         end
-    
+
         return watermark;
     end
     --
@@ -396,13 +399,13 @@ do -- menu
             Icon.Size = UDim2.new(0, 16, 0, 15)
             Icon.Text = ""
             Icon.ZIndex = 99
-            Icon.AutoButtonColor = false            
+            Icon.AutoButtonColor = false
 
-            framework["instance_manager"].new("UICorner", {
+            Instance_manager.new("UICorner", {
                 Parent = Icon;
                 CornerRadius = udim(0, 4);
             });
-            
+
             Outline4.Name = "Outline"
             Outline4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             Outline4.BackgroundTransparency = 1
@@ -412,7 +415,7 @@ do -- menu
             Outline4.Size = UDim2.new(1, 2, 1, 2)
             Outline4.ZIndex = 99
             Outline4.Parent = Icon
-        
+
             ColorWindow.Name = "ColorWindow"
             ColorWindow.AnchorPoint = Vector2.new(0.5, 0.5)
             ColorWindow.BackgroundColor3 = UI.themes.outline
@@ -424,11 +427,11 @@ do -- menu
             ColorWindow.ZIndex = 99
             ColorWindow.Visible = false
 
-            framework["instance_manager"].new("UICorner", {
+            Instance_manager.new("UICorner", {
                 Parent = ColorWindow;
                 CornerRadius = udim(0, 6);
             });
-        
+
             ColorInline.Name = "ColorInline"
             ColorInline.BackgroundColor3 = UI.themes.background
             ColorInline.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -436,7 +439,7 @@ do -- menu
             ColorInline.Position = UDim2.new(0, 1, 0, 1)
             ColorInline.Size = UDim2.new(1, -2, 1, -2)
 
-            framework["instance_manager"].new("UICorner", {
+            Instance_manager.new("UICorner", {
                 Parent = ColorInline;
                 CornerRadius = udim(0, 6);
             });
@@ -461,8 +464,8 @@ do -- menu
             text_color.AutoButtonColor = false
             text_color.BackgroundColor3 = UI.themes.background
             text_color.BorderColor3 = UI.themes.outline
-            text_color.Position = UDim2.new(0, 7, 1, -17) 
-            text_color.Size = UDim2.new(0, 76, 0, 12) 
+            text_color.Position = UDim2.new(0, 7, 1, -17)
+            text_color.Size = UDim2.new(0, 76, 0, 12)
 
             text_color2.Name = "Text Color 2"
             text_color2.FontFace = UI.font
@@ -474,7 +477,7 @@ do -- menu
             text_color2.BackgroundColor3 = UI.themes.background
             text_color2.BorderColor3 = UI.themes.outline
             text_color2.Position = UDim2.new(0, 90, 1, -17)
-            text_color2.Size = UDim2.new(0, 80, 0, 12)  
+            text_color2.Size = UDim2.new(0, 80, 0, 12)
 
             text_color_outline.Name = "Outline"
             text_color_outline.BackgroundTransparency = 1
@@ -495,10 +498,10 @@ do -- menu
             Color.AutoButtonColor = false
             Color.BackgroundColor3 = default
             Color.BorderColor3 = UI.themes.background
-            Color.Position = UDim2.new(0, 6, 0, 30) 
+            Color.Position = UDim2.new(0, 6, 0, 30)
             Color.Size = UDim2.new(0, 145, 1, -74)
 
-            framework["instance_manager"].new("UICorner", {
+            Instance_manager.new("UICorner", {
                 Parent = Color;
                 CornerRadius = udim(0, 7);
             });
@@ -509,18 +512,18 @@ do -- menu
             Color_Circle.TextColor3 = Color3.fromRGB(0, 0, 0)
             Color_Circle.TextSize = UI.font_size
             Color_Circle.AutoButtonColor = false
-            Color_Circle.BackgroundColor3 = Color3.fromRGB(255, 255, 255) 
+            Color_Circle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             Color_Circle.BorderColor3 = UI.themes.background
-            Color_Circle.Position = UDim2.new(0.5, -25, 0.5, -25) 
-            Color_Circle.Size = UDim2.new(0, 7, 0, 7) 
+            Color_Circle.Position = UDim2.new(0.5, -25, 0.5, -25)
+            Color_Circle.Size = UDim2.new(0, 7, 0, 7)
             Color_Circle.Parent = Color
             Color_Circle.ZIndex = 9
 
-            framework["instance_manager"].new("UICorner", {
+            Instance_manager.new("UICorner", {
                 Parent = Color_Circle;
                 CornerRadius = UDim.new(1, 0);
             })
-        
+
             Sat.Name = "Sat"
             Sat.Image = "http://www.roblox.com/asset/?id=14684562507"
             Sat.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -530,11 +533,11 @@ do -- menu
             Sat.Size = UDim2.new(1, 0, 1, 0)
             Sat.Parent = Color
 
-            framework["instance_manager"].new("UICorner", {
+            Instance_manager.new("UICorner", {
                 Parent = Sat;
                 CornerRadius = udim(0, 6);
             });
-        
+
             Val.Name = "Val"
             Val.Image = "http://www.roblox.com/asset/?id=14684563800"
             Val.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -544,11 +547,11 @@ do -- menu
             Val.Size = UDim2.new(1, 0, 1, 0)
             Val.Parent = Color
 
-            framework["instance_manager"].new("UICorner", {
+            Instance_manager.new("UICorner", {
                 Parent = Val;
                 CornerRadius = udim(0, 6);
             });
-        
+
             Outline.Name = "Outline"
             Outline.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             Outline.BackgroundTransparency = 1
@@ -559,18 +562,18 @@ do -- menu
 
             Outline.Parent = Color
             Color.Parent = ColorInline
-        
+
             Alpha.Name = "Alpha"
             Alpha.Image = "http://www.roblox.com/asset/?id=15486053510"
             Alpha.AutoButtonColor = false
             Alpha.BackgroundTransparency = 1
             Alpha.ImageTransparency = 0.03
             Alpha.BorderSizePixel = 0
-            Alpha.Position = UDim2.new(1, -18, 0, 30) 
+            Alpha.Position = UDim2.new(1, -18, 0, 30)
             Alpha.Size = UDim2.new(0, 10, 1, -74)
             Alpha.Parent = ColorInline
 
-            framework["instance_manager"].new("UICorner", {
+            Instance_manager.new("UICorner", {
                 Parent = Alpha;
                 CornerRadius = udim(0, 5);
             });
@@ -582,15 +585,15 @@ do -- menu
             Alpha_Bg.ScaleType = Enum.ScaleType.Crop
             Alpha_Bg.ImageColor3 = Color3.fromRGB(255, 255, 255)
             Alpha_Bg.BorderSizePixel = 0
-            Alpha_Bg.Position = UDim2.new(1, -18, 0, 68)  
+            Alpha_Bg.Position = UDim2.new(1, -18, 0, 68)
             Alpha_Bg.Size = UDim2.new(0, 10, 1, -114)
             Alpha_Bg.Parent = ColorInline
 
-            framework["instance_manager"].new("UICorner", {
+            Instance_manager.new("UICorner", {
                 Parent = Alpha_Bg;
                 CornerRadius = udim(0, 5);
             });
-        
+
             Outline1.Name = "Outline"
             Outline1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             Outline1.BackgroundTransparency = 1
@@ -599,33 +602,33 @@ do -- menu
             Outline1.Position = UDim2.new(0, -1, 0, -1)
             Outline1.Size = UDim2.new(1, 2, 1, 2)
             Outline1.Parent = Alpha
-        
+
             Hue.Name = "Hue"
             Hue.Image = "http://www.roblox.com/asset/?id=138435236878653"
             Hue.AutoButtonColor = false
             Hue.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
-            Hue.BorderColor3 = Color3.fromRGB(17, 17, 17) 
+            Hue.BorderColor3 = Color3.fromRGB(17, 17, 17)
             Hue.Position = UDim2.new(0, 7, 1, -35)
             Hue.Size = UDim2.new(0, 164, 0, 10)
 
-            framework["instance_manager"].new("UICorner", {
+            Instance_manager.new("UICorner", {
                 Parent = Hue;
                 CornerRadius = udim(0, 5);
             });
-        
+
             Outline2.Name = "Outline"
             Outline2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
             Outline2.BackgroundTransparency = 1
             Outline2.BorderColor3 = Color3.fromRGB(0, 0, 0)
             Outline2.BorderSizePixel = 0
-            Outline2.Position = UDim2.new(0, -1, 0, -1) 
-            Outline2.Size = UDim2.new(1, 2, 1, 2) 
-            
+            Outline2.Position = UDim2.new(0, -1, 0, -1)
+            Outline2.Size = UDim2.new(1, 2, 1, 2)
+
             Outline2.Parent = Hue
             Hue.Parent = ColorInline
             ColorInline.Parent = ColorWindow
         end
-    
+
         --connections
         local mouseover = false
         local hue, sat, val = default:ToHSV()
@@ -663,14 +666,14 @@ do -- menu
 
             local r, g, b = math.floor(hsv.r * 255), math.floor(hsv.g * 255), math.floor(hsv.b * 255)
             local rgbColor = Color3.fromRGB(r, g, b)
-            
+
             Alpha.ImageColor3 = rgbColor
-            text_color.Text = string.format("#%02x%02x%02x", r, g, b) 
-            text_color2.Text = string.format("%d, %d, %d", r, g, b)       
-            
+            text_color.Text = string.format("#%02x%02x%02x", r, g, b)
+            text_color2.Text = string.format("%d, %d, %d", r, g, b)
+
             callback(UI:RGBA(hsv.r * 255, hsv.g * 255, hsv.b * 255, alpha))
         end
-    
+
         local function set(color, a)
             if type(color) == "table" then
                 a = color[4]
@@ -679,101 +682,101 @@ do -- menu
             if type(color) == "string" then
                 color = Color3.fromHex(color)
             end
-    
+
             local oldcolor = hsv
             local oldalpha = alpha
-    
+
             hue, sat, val = color:ToHSV()
             alpha = a or 1
             hsv = Color3.fromHSV(hue, sat, val)
-    
+
             if hsv ~= oldcolor then
                 Icon.BackgroundColor3 = hsv
                 Color.BackgroundColor3 = Color3.fromHSV(hue, 1, 1)
 
                 local r, g, b = math.floor(hsv.r * 255), math.floor(hsv.g * 255), math.floor(hsv.b * 255)
                 local rgbColor = Color3.fromRGB(r, g, b)
-                
+
                 Alpha.ImageColor3 = rgbColor
-                text_color.Text = string.format("#%02x%02x%02x", r, g, b) 
-                text_color2.Text = string.format("%d, %d, %d", r, g, b)           
-                
+                text_color.Text = string.format("#%02x%02x%02x", r, g, b)
+                text_color2.Text = string.format("%d, %d, %d", r, g, b)
+
                 if flag then
                     UI.flags[flag] = UI:RGBA(hsv.r * 255, hsv.g * 255, hsv.b * 255, alpha)
                 end
-    
+
                 callback(UI:RGBA(hsv.r * 255, hsv.g * 255, hsv.b * 255, alpha))
             end
         end
-    
+
         flags[flag] = set
         set(default, defaultalpha)
-    
+
         Sat.InputBegan:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
                 slidingsaturation = true
                 update()
             end
         end)
-    
+
         Sat.InputEnded:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
                 slidingsaturation = false
                 update()
             end
         end)
-    
+
         Hue.InputBegan:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
                 slidinghue = true
                 update()
             end
         end)
-    
+
         Hue.InputEnded:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
                 slidinghue = false
                 update()
             end
         end)
-    
+
         Alpha.InputBegan:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
                 slidingalpha = true
                 update()
             end
         end)
-    
+
         Alpha.InputEnded:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
                 slidingalpha = false
                 update()
             end
         end)
-    
-        framework:connection(uis.InputChanged, function(input)
+
+        signals.connection(uis.InputChanged, function(input)
             if input.UserInputType == Enum.UserInputType.MouseMovement then
                 if slidingalpha then
                     update()
                 end
-    
+
                 if slidinghue then
                     update()
                 end
-    
+
                 if slidingsaturation then
                     update()
                 end
             end
         end)
-    
+
         local colorpickertypes = {}
-    
+
         function colorpickertypes:Set(color, newalpha)
             set(color, newalpha)
         end
-    
-        framework:connection(uis.InputBegan, function(Input)
+
+        signals.connection(uis.InputBegan, function(Input)
             if ColorWindow.Visible and Input.UserInputType == Enum.UserInputType.MouseButton1 then
                 if not UI:IsMouseOverFrame(ColorWindow) and not UI:IsMouseOverFrame(Icon) and not UI:IsMouseOverFrame(parent) then
                     ColorWindow.Visible = false
@@ -781,30 +784,30 @@ do -- menu
                 end
             end
         end);
-    
+
         Icon.MouseButton1Down:Connect(function()
             ColorWindow.Visible = true
             parent.ZIndex = 5
-    
+
             if slidinghue then
                 slidinghue = false
             end
-    
+
             if slidingsaturation then
                 slidingsaturation = false
             end
-    
+
             if slidingalpha then
                 slidingalpha = false
             end
         end)
-    
+
         return colorpickertypes, ColorWindow
     end
     -- menu
     local pages = UI.pages;
     local sections = UI.sections;
-    -- 
+    --
     do -- window
         function UI:window(options)
             local window = {
@@ -815,18 +818,18 @@ do -- menu
                 page_amount = options.Amount or options.amount or 5;
                 elements = {};
                 sections = {};
-                pages = {}; 
+                pages = {};
             };
             --
-            local menu = framework["instance_manager"].new("ScreenGui", {
+            local menu = Instance_manager.new("ScreenGui", {
                 Name = "menu";
                 Parent = cloneref(gethui());
                 IgnoreGuiInset = Enum.ScreenInsets.DeviceSafeInsets;
                 ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
             });
             UI.menu_gui = menu;
-        
-            local background = framework["instance_manager"].new("TextButton", {
+
+            local background = Instance_manager.new("TextButton", {
                 Name = "background";
                 Parent = menu;
                 Text = "";
@@ -839,29 +842,29 @@ do -- menu
                 Size = window.size;
             });
 
-            framework["instance_manager"].new("Frame", {
+            Instance_manager.new("Frame", {
                 Name = "line";
                 ZIndex = 10;
                 BackgroundColor3 = UI.themes.accent;
                 BackgroundTransparency = 1; -- later add checks
                 BorderColor3 = color3_rgb(0, 0, 0);
                 BorderSizePixel = 0;
-                Position = udim2(0, 0, 0, 0);  
+                Position = udim2(0, 0, 0, 0);
                 Size = udim2(1, 0, 0, 1);
                 Parent = background;
             });
-        
-            framework["instance_manager"].new("Frame", {
+
+            Instance_manager.new("Frame", {
                 Name = "line";
                 BackgroundColor3 = UI.themes.outline;
                 BorderColor3 = color3_rgb(0, 0, 0);
                 BorderSizePixel = 0;
                 Position = udim2(0, 80, 0, 0);
                 Size = udim2(0, 1, 1, 0);
-                Parent = background; 
-            });  
-    
-            local tabs_holder = framework["instance_manager"].new("Frame", {
+                Parent = background;
+            });
+
+            local tabs_holder = Instance_manager.new("Frame", {
                 Name = "tabs_holder";
                 BackgroundTransparency = 1;
                 BackgroundColor3 = UI.themes.background;
@@ -871,7 +874,7 @@ do -- menu
                 Parent = background;
             });
             --
-            local page_holder = framework["instance_manager"].new("Frame", {
+            local page_holder = Instance_manager.new("Frame", {
                 Name = "page_holder";
                 BackgroundColor3 = color3_rgb(255, 255, 255);
                 BackgroundTransparency = 1.000;
@@ -895,25 +898,25 @@ do -- menu
             end;
             --
             do -- dragging
-                framework:connection(background.InputBegan, function(input)
+                signals.connection(background.InputBegan, function(input)
                     if input.UserInputType == Enum.UserInputType.MouseButton1 then
                         window.dragging[1], window.dragging[2] = true, uis:GetMouseLocation();
                     end
                 end);
-                
-                framework:connection(uis.InputEnded, function(input)
+
+                signals.connection(uis.InputEnded, function(input)
                     if input.UserInputType == Enum.UserInputType.MouseButton1 then
                         window.dragging[1] = false;
                     end
                 end);
-                
-                framework:connection(uis.InputChanged, function(input)
+
+                signals.connection(uis.InputChanged, function(input)
                     if window.dragging[1] and input.UserInputType == Enum.UserInputType.MouseMovement then
                         local mouse_pos = uis:GetMouseLocation()
-            
+
                         local x_pos = math.clamp(background.Position.X.Offset + (mouse_pos.X - window.dragging[2].X), -viewport_size.X / 2 + background.AbsoluteSize.X / 2, viewport_size.X / 2 - background.AbsoluteSize.X / 2);
                         local y_pos = math.clamp(background.Position.Y.Offset + (mouse_pos.Y - window.dragging[2].Y), -viewport_size.Y / 2 + background.AbsoluteSize.Y / 2, viewport_size.Y / 2 - background.AbsoluteSize.Y / 2);
-            
+
                         background.Position = udim2(background.Position.X.Scale, x_pos, background.Position.Y.Scale, y_pos);
                         window.dragging[2] = mouse_pos;
                     end
@@ -943,7 +946,7 @@ do -- menu
             };
             --
             if (not page.window.elements.tab_holder:FindFirstChild("UIListLayout")) then
-                framework["instance_manager"].new("UIListLayout", {
+                Instance_manager.new("UIListLayout", {
                     Name = "UIListLayout";
                     Padding = udim(0, 0);
                     SortOrder = Enum.SortOrder.LayoutOrder;
@@ -951,30 +954,30 @@ do -- menu
                 });
             end;
             --
-            local tab_button = framework["instance_manager"].new("TextButton", {
+            local tab_button = Instance_manager.new("TextButton", {
                 Name = page.name;
                 BackgroundColor3 = UI.themes.background;
                 AutoButtonColor = false;
                 BackgroundTransparency = 0;
                 BorderSizePixel = 0;
-                Position = udim2(0, 0, 0, 0);  
+                Position = udim2(0, 0, 0, 0);
                 Size = udim2(1, 0, 0, 90);
                 Text = "";
                 Parent = page.window.elements.tab_holder;
             });
             --
-            local image_button = framework["instance_manager"].new("ImageLabel", {
+            local image_button = Instance_manager.new("ImageLabel", {
                 Name = page.name;
                 Image = page.icon;
                 BackgroundTransparency = 1;
                 BorderSizePixel = 0;
-                Position = udim2(0.5, -properties.size.X.Offset / 2, 0.5, -properties.size.Y.Offset / 2); 
+                Position = udim2(0.5, -properties.size.X.Offset / 2, 0.5, -properties.size.Y.Offset / 2);
                 Size = properties.size;
                 ImageColor3 = UI.themes.inactive;
                 Parent = tab_button;
-            });        
+            });
             --
-            local text_button = framework["instance_manager"].new("TextLabel", {
+            local text_button = Instance_manager.new("TextLabel", {
                 Name = "Window_Name";
                 Text = string.upper(page.name);
                 FontFace = UI.font;
@@ -983,12 +986,12 @@ do -- menu
                 BackgroundTransparency = 1;
                 TextStrokeTransparency = 0;
                 BorderSizePixel = 0;
-                Position = udim2(0, 0, 0, 25);  
+                Position = udim2(0, 0, 0, 25);
                 Size = udim2(1, 0, 1, 0);
                 Parent = tab_button;
-            });    
+            });
             --
-            local new_page = framework["instance_manager"].new("Frame", {
+            local new_page = Instance_manager.new("Frame", {
                 Name = "new_page";
                 BackgroundColor3 = color3_rgb(255, 255, 255);
                 BackgroundTransparency = 1;
@@ -1000,22 +1003,22 @@ do -- menu
                 Parent = page.window.elements.holder;
             });
             --
-            local left = framework["instance_manager"].new("Frame", {
+            local left = Instance_manager.new("Frame", {
                 Name = "left";
                 BackgroundColor3 = UI.themes.background;
                 BorderColor3 = UI.themes.outline;
                 Size = udim2(0.33, -10, 1, 0);
                 Parent = new_page;
             });
-    
-            framework["instance_manager"].new("UIListLayout", {
+
+            Instance_manager.new("UIListLayout", {
                 Name = "UIListLayout";
                 Padding = udim(0, 6);
                 SortOrder = Enum.SortOrder.LayoutOrder;
                 Parent = left;
             });
             --
-            local center = framework["instance_manager"].new("Frame", {
+            local center = Instance_manager.new("Frame", {
                 Name = "center";
                 BackgroundColor3 = UI.themes.background;
                 BorderColor3 = UI.themes.outline;
@@ -1024,14 +1027,14 @@ do -- menu
                 Parent = new_page;
             });
             --
-            framework["instance_manager"].new("UIListLayout", {
+            Instance_manager.new("UIListLayout", {
                 Name = "UIListLayout";
                 Padding = udim(0, 6);
                 SortOrder = Enum.SortOrder.LayoutOrder;
                 Parent = center;
             });
             --
-            local right = framework["instance_manager"].new("Frame", {
+            local right = Instance_manager.new("Frame", {
                 Name = "right";
                 BackgroundColor3 = UI.themes.background;
                 BorderColor3 = UI.themes.outline;
@@ -1040,12 +1043,12 @@ do -- menu
                 Parent = new_page;
             });
             --
-            framework["instance_manager"].new("UIListLayout", {
+            Instance_manager.new("UIListLayout", {
                 Name = "UIListLayout";
                 Padding = udim(0, 6);
                 SortOrder = Enum.SortOrder.LayoutOrder;
                 Parent = right;
-            }); 
+            });
             --
             do -- auto-sizer
                 local tabs = {};
@@ -1054,19 +1057,19 @@ do -- menu
                         table.insert(tabs, v);
                     end
                 end
-            
+
                 local tab_count = #tabs;
                 local holder_size = page.window.elements.tab_holder.Size.Y.Offset;
                 local adjusted_size = math.max(holder_size, 0);
-            
+
                 if tab_count > 0 and adjusted_size > 0 then
                     local tab_height = adjusted_size / tab_count;
-            
+
                     for _, tab in ipairs(tabs) do
                         tab.Size = udim2(1, 0, 0, tab_height);
                     end
                 end
-            end             
+            end
             --
             function page:Turn(bool)
                 page.open = bool;
@@ -1078,25 +1081,25 @@ do -- menu
                         if bool then v.BackgroundTransparency = 1 end;
                         table.insert(tweens, tween_service:Create(v, TweenInfo.new(0.333, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), { BackgroundTransparency = bool and 0 or 1 }));
                     end;
-        
+
                     if v:IsA("TextLabel") and v.Name ~= "Window_Name" then
                         if bool then v.TextTransparency = 1 end;
                         table.insert(tweens, tween_service:Create(v, TweenInfo.new(0.333, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), { TextTransparency = bool and 0 or 1 }));
-                    end;    
+                    end;
                 end;
-                
-                for _, tween in ipairs(tweens) do 
-                    tween:Play() 
+
+                for _, tween in ipairs(tweens) do
+                    tween:Play()
                 end;
 
                 tween_service:Create(tab_button, TweenInfo.new(0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {
                     BackgroundColor3 = bool and UI.themes.outline or UI.themes.background,
                 }):Play()
-    
+
                 tween_service:Create(image_button, TweenInfo.new(0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {
                     ImageColor3 = bool and UI.themes.accent or UI.themes.inactive,
                 }):Play()
-    
+
                 tween_service:Create(text_button, TweenInfo.new(0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {
                     TextColor3 = bool and UI.themes.accent or UI.themes.inactive,
                 }):Play()
@@ -1109,7 +1112,7 @@ do -- menu
                     }):Play()
                 end
             end);
-        
+
             tab_button.MouseLeave:Connect(function()
                 if (not page.open) then
                     tween_service:Create(tab_button, TweenInfo.new(0.3, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {
@@ -1118,7 +1121,7 @@ do -- menu
                 end
             end);
             --
-            framework:connection(tab_button.MouseButton1Down, function()
+            signals.connection(tab_button.MouseButton1Down, function()
                 if not page.open then
                     for _, v in pairs(page.window.pages) do
                         if v.open and v ~= page then
@@ -1128,7 +1131,7 @@ do -- menu
                     page:Turn(true);
                 end
             end)
-                 
+
             -- elements
             page.elements = {
                 left = left,
@@ -1137,7 +1140,7 @@ do -- menu
                 button = tab_button,
                 main = new_page,
             };
-            
+
             if #page.window.pages == 0 then
                 page:Turn(true);
             end
@@ -1160,8 +1163,8 @@ do -- menu
             content = {},
             sections = {},
         };
-    
-        local top_section = framework["instance_manager"].new("Frame", {
+
+        local top_section = Instance_manager.new("Frame", {
             Name = "top_section";
             BackgroundTransparency = 1;
             AutomaticSize = Enum.AutomaticSize.Y;
@@ -1170,9 +1173,9 @@ do -- menu
             Size = udim2(1, 0, 0, 20);
             Parent = (section.side == "left" and section.page.elements.left) or (section.side == "center" and section.page.elements.center) or (section.side == "right" and section.page.elements.right);
             ZIndex = 10 - #section.page.sections;
-        }); 
+        });
 
-        local title = framework["instance_manager"].new("TextLabel", {
+        local title = Instance_manager.new("TextLabel", {
             Name = section.name;
             FontFace = UI.font;
             Text = string.upper(section.name);
@@ -1186,9 +1189,9 @@ do -- menu
             Position = udim2(0, 15, 0, 12);
             Size = udim2(0, 186, 0, 20);
             Parent = top_section;
-        }); 
+        });
 
-        local section_content = framework["instance_manager"].new("Frame", {
+        local section_content = Instance_manager.new("Frame", {
             Name = "section_content";
             AutomaticSize = Enum.AutomaticSize.Y;
             BackgroundColor3 = color3_rgb(255, 255, 255);
@@ -1198,26 +1201,26 @@ do -- menu
             Position = udim2(0, 16, 0, 44);
             Size = udim2(1, -32, 0, 30);
             Parent = top_section;
-        }); 
+        });
 
-        framework["instance_manager"].new("UIListLayout", {
+        Instance_manager.new("UIListLayout", {
             Name = "UIListLayout";
             Padding = udim(0, 22);
             SortOrder = Enum.SortOrder.LayoutOrder;
             Parent = section_content;
-        }); 
+        });
 
-        framework["instance_manager"].new("UIPadding", {
+        Instance_manager.new("UIPadding", {
             Name = "UIPadding";
             PaddingBottom = udim(0, 6);
             Parent = section_content;
-        }); 
+        });
 
         -- elements
         section.elements = {
             section_content = section_content
         };
-    
+
         section.page.sections[#section.page.sections + 1] = section;
         return setmetatable(section, UI.sections);
     end
@@ -1238,44 +1241,44 @@ do -- menu
             Colorpickers = 0,
         };
         --
-        local new_toggle = framework["instance_manager"].new("TextButton", {
+        local new_toggle = Instance_manager.new("TextButton", {
             Name = toggle.name;
             Text = "";
             AutoButtonColor = false;
             BackgroundTransparency = 1;
             Size = udim2(1, 0, 0, 18);
             Parent = toggle.section.elements.section_content;
-        }); 
-        
-        local toggle_bg = framework["instance_manager"].new("Frame", {
+        });
+
+        local toggle_bg = Instance_manager.new("Frame", {
             Name = "toggle_bg";
             BackgroundColor3 = UI.themes.outline;
             Position = udim2(0.81, 0, 0, 0);
             Size = udim2(0, 34, 0, 20);
             Parent = new_toggle;
-        }); 
+        });
 
-        framework["instance_manager"].new("UICorner", {
+        Instance_manager.new("UICorner", {
             Parent = toggle_bg;
             CornerRadius = udim(0, 10);
         });
 
-        local accent_bg = framework["instance_manager"].new("Frame", {
+        local accent_bg = Instance_manager.new("Frame", {
             Name = "accent_bg";
             BorderColor3 = UI.themes.outline;
             BorderSizePixel = 1;
             Position = udim2(0, 2, 0.5, -8);
-            Size = udim2(0, 16, 0, 16); 
-            Parent = toggle_bg; 
+            Size = udim2(0, 16, 0, 16);
+            Parent = toggle_bg;
             BackgroundColor3 = UI.themes.inactive;
         });
-        
-        framework["instance_manager"].new("UICorner", {
+
+        Instance_manager.new("UICorner", {
             Parent = accent_bg;
-            CornerRadius = udim(1, 0); 
+            CornerRadius = udim(1, 0);
         });
-    
-        framework["instance_manager"].new("TextLabel", {
+
+        Instance_manager.new("TextLabel", {
             Name = "title";
             FontFace = UI.font;
             TextSize = UI.font_size;
@@ -1290,9 +1293,9 @@ do -- menu
             Size = udim2(1, 0, 1, 0);
             Parent = new_toggle;
             Text = toggle.name;
-        }); 
+        });
 
-        framework["instance_manager"].new("TextLabel", {
+        Instance_manager.new("TextLabel", {
             Name = "description";
             FontFace = UI.font;
             TextSize = UI.font_size;
@@ -1307,8 +1310,8 @@ do -- menu
             Size = udim2(1, 0, 1, 0);
             Parent = new_toggle;
             Text = toggle.description;
-        }); 
-    
+        });
+
         -- functions
         local function set_state()
             toggle.toggled = not toggle.toggled;
@@ -1317,9 +1320,9 @@ do -- menu
             --
             tween_service:Create(accent_bg, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { Position = toggle.toggled and udim2(1, -18, 0.5, -8) or udim2(0, 2, 0.5, -8) }):Play()
             tween_service:Create(accent_bg, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { BackgroundColor3 = toggle.toggled and UI.themes.accent or UI.themes.inactive }):Play()
-        end          
-        framework:connection(new_toggle.MouseButton1Down, set_state);
-    
+        end
+        signals.connection(new_toggle.MouseButton1Down, set_state);
+
         -- functions
         function toggle.Set(bool)
             bool = type(bool) == "boolean" and bool or false;
@@ -1331,7 +1334,7 @@ do -- menu
         toggle.Set(toggle.State);
         UI.flags[toggle.flag] = toggle.State;
         flags[toggle.flag] = toggle.Set;
-    
+
         return toggle;
     end
     --
@@ -1355,7 +1358,7 @@ do -- menu
         --
         local slider_name = ("[value]" .. slider.Sub) -- for slider name
         --
-        local new_slider = framework["instance_manager"].new("Frame", {
+        local new_slider = Instance_manager.new("Frame", {
             Name = "new_slider",
             BackgroundColor3 = color3_rgb(255, 255, 255),
             BackgroundTransparency = 1,
@@ -1364,8 +1367,8 @@ do -- menu
             Size = udim2(1, 0, 0, slider.Name and 26 or 12),
             Parent = slider.section.elements.section_content,
         });
-    
-        local Inline = framework["instance_manager"].new("TextButton", {
+
+        local Inline = Instance_manager.new("TextButton", {
             Name = "Slider_Inline",
             BackgroundColor3 = UI.themes.outline,
             BorderColor3 = color3_rgb(0, 0, 0),
@@ -1379,8 +1382,8 @@ do -- menu
             AutoButtonColor = false,
             Parent = new_slider,
         });
-    
-        local Accent = framework["instance_manager"].new("TextButton", {
+
+        local Accent = Instance_manager.new("TextButton", {
             Name = "Slider_Accent",
             BackgroundColor3 = UI.themes.accent,
             BorderColor3 = color3_rgb(0, 0, 0),
@@ -1393,21 +1396,21 @@ do -- menu
             AutoButtonColor = false,
             Parent = Inline,
         });
-    
-        local SliderCircle = framework["instance_manager"].new("Frame", {
+
+        local SliderCircle = Instance_manager.new("Frame", {
             Name = "Slider_Circle",
             BackgroundColor3 = UI.themes.accent,
             Size = udim2(0, 12, 0, 12),
             AnchorPoint = vec2(0.5, 0.5),
             Parent = Inline,
         });
-        
-        framework["instance_manager"].new("UICorner", {
+
+        Instance_manager.new("UICorner", {
             Parent = SliderCircle,
             CornerRadius = udim(1, 0),
         });
-    
-        local Value = framework["instance_manager"].new("TextLabel", {
+
+        local Value = Instance_manager.new("TextLabel", {
             Name = "Value",
             FontFace = UI.font,
             Text = "0",
@@ -1423,8 +1426,8 @@ do -- menu
             TextXAlignment = Enum.TextXAlignment.Right,
             Parent = new_slider,
         });
-    
-        local Title = framework["instance_manager"].new("TextLabel", {
+
+        local Title = Instance_manager.new("TextLabel", {
             Name = "Title",
             FontFace = UI.font,
             TextColor3 = color3_rgb(255, 255, 255),
@@ -1440,8 +1443,8 @@ do -- menu
             Text = slider.Name or "",
             Visible = slider.Name ~= nil,
             Parent = new_slider,
-        });    
-    
+        });
+
         -- functions
         local Sliding = false;
         local Val = slider.State;
@@ -1450,50 +1453,50 @@ do -- menu
         local function is_set(value)
             value = math.clamp(math.floor(value * slider.Decimals + 0.5) / slider.Decimals, slider.Min, slider.Max);
             local target_size = udim2((value - slider.Min) / (slider.Max - slider.Min), 0, 1, 0);
-        
+
             if current_tween then current_tween:Cancel() end;
             current_tween = tween_service:Create(Accent, TweenInfo.new(0.1, Enum.EasingStyle.Linear), {Size = target_size});
             current_tween:Play();
-        
+
             local inlineWidth = Inline.AbsoluteSize.X
             local target_positionx = inlineWidth * target_size.X.Scale
             local horizontalOffset = 5
             local verticalOffset = 3
-        
+
             local pos = udim2( 0, target_positionx - SliderCircle.AbsoluteSize.X / 2 + horizontalOffset, 1, -SliderCircle.AbsoluteSize.Y / 2 + verticalOffset );
             local circle_tween = tween_service:Create(SliderCircle, TweenInfo.new(0.1, Enum.EasingStyle.Linear), {Position = pos})
             circle_tween:Play()
-        
+
             Value.Text = slider.Disabled and value == slider.Min and slider.Disabled or slider_name:gsub("%[value%]", string.format("%.14g", value));
 
             Val = value
-            UI.flags[slider.Flag] = value  
+            UI.flags[slider.Flag] = value
             slider.Callback(value)
-        end                
+        end
         --
         local function is_sliding(input)
             is_set(((slider.Max - slider.Min) * ((input.Position.X - Inline.AbsolutePosition.X) / Inline.AbsoluteSize.X)) + slider.Min)
         end
         --
         for _, obj in pairs({Inline, Accent}) do
-            framework:connection(obj.InputBegan, function(input)
+            signals.connection(obj.InputBegan, function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     Sliding = true;
                     is_sliding(input);
                 end
             end)
-            framework:connection(obj.InputEnded, function(input)
+            signals.connection(obj.InputEnded, function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then Sliding = false end;
             end)
         end
         --
-        framework:connection(uis.InputChanged, function(input)
+        signals.connection(uis.InputChanged, function(input)
             if input.UserInputType == Enum.UserInputType.MouseMovement and Sliding then
                 is_sliding(input);
             end
         end)
         --
-        function slider:Set(value) 
+        function slider:Set(value)
             is_set(value);
         end;
         flags[slider.Flag] = is_set;
@@ -1511,15 +1514,15 @@ do -- menu
             name = (properties.name or properties.Name or "button"),
             callback = (properties.callback or properties.Callback or properties.callBack or properties.CallBack or function() end),
         };
-    
-        local new_button = framework["instance_manager"].new("Frame", {
+
+        local new_button = Instance_manager.new("Frame", {
             Name = "new_button",
             BackgroundTransparency = 1,
             Size = udim2(1, 0, 0, 16),
             Parent = button.section.elements.section_content,
         });
-    
-        local outline = framework["instance_manager"].new("Frame", {
+
+        local outline = Instance_manager.new("Frame", {
             Name = "button_outline",
             BackgroundColor3 = UI.themes.outline,
             Position = udim2(0, 0, 1, -16),
@@ -1527,13 +1530,13 @@ do -- menu
             BorderSizePixel = 0,
             Parent = new_button,
         });
-    
-        framework["instance_manager"].new("UICorner", {
+
+        Instance_manager.new("UICorner", {
             Parent = outline,
             CornerRadius = udim(0, 4),
         });
-    
-        local inline = framework["instance_manager"].new("TextButton", {
+
+        local inline = Instance_manager.new("TextButton", {
             Name = "button_inline",
             Text = "",
             BackgroundColor3 = UI.themes.background,
@@ -1544,14 +1547,14 @@ do -- menu
             TextSize = 11,
             AutoButtonColor = false,
             Parent = outline,
-        });      
-    
-        framework["instance_manager"].new("UICorner", {
+        });
+
+        Instance_manager.new("UICorner", {
             Parent = inline,
             CornerRadius = udim(0, 4),
         });
-    
-        local text = framework["instance_manager"].new("TextLabel", {
+
+        local text = Instance_manager.new("TextLabel", {
             Name = "button_text",
             FontFace = UI.font,
             Text = string.upper(button.name),
@@ -1561,21 +1564,21 @@ do -- menu
             Size = udim2(1, 0, 1, 0),
             Parent = inline,
         });
-    
+
         new_button.MouseEnter:Connect(function()
             tween_service:Create(outline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = UI.themes.accent}):Play()
         end)
-        
+
         new_button.MouseLeave:Connect(function()
             tween_service:Create(outline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = UI.themes.outline}):Play()
         end)
-    
+
         local confirm = false
-        framework:connection(inline.MouseButton1Down, function()
+        signals.connection(inline.MouseButton1Down, function()
             if (not confirm) then
                 confirm = true
                 text.Text = "ARE YOU SURE?"
-                
+
                 delay(2, function()
                     if confirm then
                         confirm = false
@@ -1587,10 +1590,10 @@ do -- menu
                 button.callback()
                 text.Text = string.upper(button.name);
             end
-        end);                         
+        end);
 
         return button;
-    end;    
+    end;
     --
     function sections:dropdown(Properties)
         local Properties = Properties or {};
@@ -1610,7 +1613,7 @@ do -- menu
             OptionInsts = {},
         };
         --
-        local NewList = framework["instance_manager"].new("Frame", {
+        local NewList = Instance_manager.new("Frame", {
             Name = "NewList",
             BackgroundColor3 = color3_rgb(255, 255, 255),
             BackgroundTransparency = 1,
@@ -1619,23 +1622,23 @@ do -- menu
             Size = udim2(1, 0, 0, Dropdown.Name ~= nil and 20 or 16),
             Parent = Dropdown.Section.elements.section_content
         });
-        
-        local Outline = framework["instance_manager"].new("Frame", {
+
+        local Outline = Instance_manager.new("Frame", {
             Name = "List_Outline",
             BackgroundColor3 = UI.themes.outline,
             BorderSizePixel = 0,
-            BorderColor3 = color3_rgb(0, 0, 0), 
+            BorderColor3 = color3_rgb(0, 0, 0),
             Position = udim2(0.5, 0, 0, -5),
             Size = udim2(0.5, 0, 0, 18),
             Parent = NewList
         });
-        
-        framework["instance_manager"].new("UICorner", {
+
+        Instance_manager.new("UICorner", {
             Parent = Outline,
             CornerRadius = udim(0, 6),
         });
-        
-        local Inline = framework["instance_manager"].new("TextButton", {
+
+        local Inline = Instance_manager.new("TextButton", {
             Name = "List_Inline",
             BackgroundColor3 = UI.themes.background,
             BorderColor3 = color3_rgb(0, 0, 0),
@@ -1650,12 +1653,12 @@ do -- menu
             Parent = Outline
         });
 
-        framework["instance_manager"].new("UICorner", {
+        Instance_manager.new("UICorner", {
             Parent = Inline,
             CornerRadius = udim(0, 5),
         });
-        
-        local Value = framework["instance_manager"].new("TextLabel", {
+
+        local Value = Instance_manager.new("TextLabel", {
             Name = "Value",
             FontFace = UI.font,
             Text = "None",
@@ -1672,21 +1675,21 @@ do -- menu
             TextTruncate = Enum.TextTruncate.AtEnd,
             Parent = Inline
         });
-        
-        local Icon = framework["instance_manager"].new("ImageLabel", {
+
+        local Icon = Instance_manager.new("ImageLabel", {
             Name = "Dropdown_Icon",
             Image = "http://www.roblox.com/asset/?id=13184099706",
             BackgroundTransparency = 1,
             BorderSizePixel = 0,
             ImageColor3 = color3_rgb(98,98,98),
             Size = udim2(0, 8, 0, 10),
-            Position = udim2(1, -5, 0.5, 0), 
-            AnchorPoint = vec2(1, 0.5), 
-            ScaleType = Enum.ScaleType.Fit, 
+            Position = udim2(1, -5, 0.5, 0),
+            AnchorPoint = vec2(1, 0.5),
+            ScaleType = Enum.ScaleType.Fit,
             Parent = Inline
         });
-        
-        local ContentOutline = framework["instance_manager"].new("Frame", {
+
+        local ContentOutline = Instance_manager.new("Frame", {
             Name = "List_ContentOutline",
             AutomaticSize = Enum.AutomaticSize.Y,
             BackgroundColor3 = UI.themes.outline,
@@ -1697,12 +1700,12 @@ do -- menu
             Parent = Outline
         });
 
-        framework["instance_manager"].new("UICorner", {
+        Instance_manager.new("UICorner", {
             Parent = ContentOutline,
             CornerRadius = udim(0, 6),
         });
-        
-        local ContentInline = framework["instance_manager"].new("Frame", {
+
+        local ContentInline = Instance_manager.new("Frame", {
             Name = "List_ContentInline",
             BackgroundColor3 = UI.themes.background,
             BorderColor3 = color3_rgb(0, 0, 0),
@@ -1712,26 +1715,26 @@ do -- menu
             Parent = ContentOutline
         });
 
-        framework["instance_manager"].new("UICorner", {
+        Instance_manager.new("UICorner", {
             Parent = ContentInline,
             CornerRadius = udim(0, 6),
         });
-        
-        local UIListLayout = framework["instance_manager"].new("UIListLayout", {
+
+        local UIListLayout = Instance_manager.new("UIListLayout", {
             Name = "UIListLayout",
             Padding = udim(0, 2),
             SortOrder = Enum.SortOrder.LayoutOrder,
             Parent = ContentInline
         });
-        
-        local UIPadding = framework["instance_manager"].new("UIPadding", {
+
+        local UIPadding = Instance_manager.new("UIPadding", {
             Name = "UIPadding",
             PaddingBottom = udim(0, 2),
             PaddingTop = udim(0, 2),
             Parent = ContentInline
         });
-        
-        local description = framework["instance_manager"].new("TextLabel", {
+
+        local description = Instance_manager.new("TextLabel", {
             Name = "description",
             FontFace = UI.font,
             TextColor3 = UI.themes.inactive,
@@ -1749,8 +1752,8 @@ do -- menu
             Text = Dropdown.description ~= nil and Dropdown.description or "",
             ZIndex = -1
         });
-        
-        local title = framework["instance_manager"].new("TextLabel", {
+
+        local title = Instance_manager.new("TextLabel", {
             Name = "title",
             FontFace = UI.font,
             TextColor3 = color3_rgb(255, 255, 255),
@@ -1768,12 +1771,12 @@ do -- menu
         });
 
         -- connections
-        framework:connection(Inline.MouseButton1Down, function()
+        signals.connection(Inline.MouseButton1Down, function()
             ContentOutline.Visible = not ContentOutline.Visible
             tween_service:Create(Icon, TweenInfo.new(0.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Rotation = ContentOutline.Visible and 180 or 0}):Play()
             NewList.ZIndex = ContentOutline.Visible and 5 or 1
         end)
-        framework:connection(uis.InputBegan, function(Input)
+        signals.connection(uis.InputBegan, function(Input)
             if ContentOutline.Visible and Input.UserInputType == Enum.UserInputType.MouseButton1 then
                 if not UI:IsMouseOverFrame(ContentOutline) and not UI:IsMouseOverFrame(Inline) then
                     ContentOutline.Visible = false
@@ -1805,7 +1808,7 @@ do -- menu
                         text.TextColor3 = UI.themes.accent
                         AccentLine.BackgroundTransparency = 0
                     end
-                    
+
                     local textchosen = {}
                     for _, opt in next, chosen do
                         table.insert(textchosen, opt)
@@ -1820,12 +1823,12 @@ do -- menu
                     if previousText then
                         previousText.TextColor3 = UI.themes.inactive
                     end
-                    
+
                     for opt, tbl in next, Dropdown.OptionInsts do
                         tbl.text.TextColor3 = UI.themes.inactive
                         tbl.accent.BackgroundTransparency = 1
                     end
-                    
+
                     chosen = option
                     Value.Text = option
                     text.TextColor3 = UI.themes.accent
@@ -1839,47 +1842,47 @@ do -- menu
                     Dropdown.Callback(option)
                 end
             end)
-        end        
+        end
         --
         local function createoptions(tbl)
             for _, option in next, tbl do
                 Dropdown.OptionInsts[option] = {}
                 --
-                local NewOption = framework["instance_manager"].new("TextButton", { 
-                    Name = "NewOption", 
-                    FontFace = UI.font, 
-                    Text = "", 
-                    TextColor3 = color3_rgb(255, 255, 255), 
-                    TextSize = UI.font_size, 
-                    TextStrokeTransparency = 0, 
-                    TextWrapped = true, 
-                    TextXAlignment = Enum.TextXAlignment.Left, 
-                    AutoButtonColor = false, 
-                    BackgroundTransparency = 1, 
-                    Size = udim2(1, 0, 0, 14), 
-                    Parent = ContentInline 
+                local NewOption = Instance_manager.new("TextButton", {
+                    Name = "NewOption",
+                    FontFace = UI.font,
+                    Text = "",
+                    TextColor3 = color3_rgb(255, 255, 255),
+                    TextSize = UI.font_size,
+                    TextStrokeTransparency = 0,
+                    TextWrapped = true,
+                    TextXAlignment = Enum.TextXAlignment.Left,
+                    AutoButtonColor = false,
+                    BackgroundTransparency = 1,
+                    Size = udim2(1, 0, 0, 14),
+                    Parent = ContentInline
                 });
-                local AccentLine = framework["instance_manager"].new("Frame", { 
-                    Name = "AccentLine", 
-                    BackgroundColor3 = UI.themes.accent, 
-                    Size = udim2(0, 1, 1, 0), 
-                    BackgroundTransparency = 1, 
-                    Parent = NewOption 
+                local AccentLine = Instance_manager.new("Frame", {
+                    Name = "AccentLine",
+                    BackgroundColor3 = UI.themes.accent,
+                    Size = udim2(0, 1, 1, 0),
+                    BackgroundTransparency = 1,
+                    Parent = NewOption
                 });
-                local OptionLabel = framework["instance_manager"].new("TextLabel", { 
-                    Name = "OptionLabel", 
-                    FontFace = UI.font, 
-                    Text = option, 
-                    TextColor3 = color3_rgb(145, 145, 145), 
-                    TextSize = UI.font_size, 
-                    TextStrokeTransparency = 0, 
-                    TextXAlignment = Enum.TextXAlignment.Left, 
-                    BackgroundTransparency = 1, 
-                    Position = udim2(0, 4, 0, 0), 
-                    Size = udim2(1, 0, 1, 0), 
-                    Parent = NewOption 
+                local OptionLabel = Instance_manager.new("TextLabel", {
+                    Name = "OptionLabel",
+                    FontFace = UI.font,
+                    Text = option,
+                    TextColor3 = color3_rgb(145, 145, 145),
+                    TextSize = UI.font_size,
+                    TextStrokeTransparency = 0,
+                    TextXAlignment = Enum.TextXAlignment.Left,
+                    BackgroundTransparency = 1,
+                    Position = udim2(0, 4, 0, 0),
+                    Size = udim2(1, 0, 1, 0),
+                    Parent = NewOption
                 });
-    
+
                 Count = Count + 1
                 Dropdown.OptionInsts[option].text = OptionLabel
                 Dropdown.OptionInsts[option].accent = AccentLine
@@ -1893,14 +1896,14 @@ do -- menu
             if Dropdown.Max then
                 table.clear(chosen)
                 option = type(option) == "table" and option or {}
-    
+
                 for opt, tbl in next, Dropdown.OptionInsts do
                     if not table.find(option, opt) then
                         tbl.text.TextColor3 = UI.themes.inactive
                         tbl.accent.BackgroundTransparency = 1
                     end
                 end
-    
+
                 for _, opt in next, option do
                     if table.find(Dropdown.Options, opt) and #chosen < Dropdown.Max then
                         table.insert(chosen, opt)
@@ -1908,16 +1911,16 @@ do -- menu
                         Dropdown.OptionInsts[opt].accent.BackgroundTransparency = 0
                     end
                 end
-    
+
                 local textchosen = {}
                 local cutobject = false
-    
+
                 for _, opt in next, chosen do
                     table.insert(textchosen, opt)
                 end
-    
+
                 Value.Text = #chosen == 0 and "" or table.concat(textchosen, ",") .. (cutobject and ", ..." or "")
-    
+
                 UI.flags[Dropdown.Flag] = chosen
                 Dropdown.Callback(chosen)
             end
@@ -1936,7 +1939,7 @@ do -- menu
                 if table.find(Dropdown.Options, option) then
                     chosen = option
                     Dropdown.OptionInsts[option].text.TextColor3 = UI.themes.accent
-                    Dropdown.OptionInsts[option].accent.BackgroundTransparency = 0 
+                    Dropdown.OptionInsts[option].accent.BackgroundTransparency = 0
                     Value.Text = option
                     UI.flags[Dropdown.Flag] = chosen
                     Dropdown.Callback(chosen)
@@ -1958,19 +1961,19 @@ do -- menu
                 end)()
             end
             table.clear(Dropdown.OptionInsts)
-    
+
             createoptions(tbl)
-    
+
             if Dropdown.Max then
                 table.clear(chosen)
             else
                 chosen = nil
             end
-    
+
             UI.flags[Dropdown.Flag] = chosen
             Dropdown.Callback(chosen)
         end
-    
+
         if Dropdown.Max then
             flags[Dropdown.Flag] = set
         else
@@ -1993,7 +1996,7 @@ do -- menu
             Flag = (Properties.flag or Properties.Flag or Properties.pointer or Properties.Pointer or UI.next_flag()),
         };
         --
-        local NewBox = framework["instance_manager"].new("TextButton", {
+        local NewBox = Instance_manager.new("TextButton", {
             Name = "NewBox",
             FontFace = UI.font,
             Text = "",
@@ -2007,8 +2010,8 @@ do -- menu
             Size = udim2(1, 0, 0, textbox.Name ~= nil and 30 or 20),
             Parent = textbox.Section.elements.section_content
         });
-        
-        local Outline = framework["instance_manager"].new("Frame", {
+
+        local Outline = Instance_manager.new("Frame", {
             Name = "textbox_outline",
             BackgroundColor3 = UI.themes.outline,
             BorderColor3 = color3_rgb(0, 0, 0),
@@ -2018,12 +2021,12 @@ do -- menu
             Parent = NewBox
         });
 
-        framework["instance_manager"].new("UICorner", {
+        Instance_manager.new("UICorner", {
             Parent = Outline,
             CornerRadius = udim(0, 4),
         });
-        
-        local Inline = framework["instance_manager"].new("Frame", {
+
+        local Inline = Instance_manager.new("Frame", {
             Name = "textbox_inline",
             BackgroundColor3 = UI.themes.background,
             BorderColor3 = color3_rgb(0, 0, 0),
@@ -2033,16 +2036,16 @@ do -- menu
             Parent = Outline
         });
 
-        framework["instance_manager"].new("UICorner", {
+        Instance_manager.new("UICorner", {
             Parent = Inline,
             CornerRadius = udim(0, 4),
         });
-        
-        local Value = framework["instance_manager"].new("TextBox", {
+
+        local Value = Instance_manager.new("TextBox", {
             Name = "text",
             FontFace = UI.font,
             Text = textbox.State,
-            PlaceholderText = textbox.Placeholder, 
+            PlaceholderText = textbox.Placeholder,
             TextColor3 = color3_rgb(255, 255, 255),
             PlaceholderColor3 = UI.themes.inactive,
             TextSize = UI.font_size,
@@ -2057,8 +2060,8 @@ do -- menu
             Parent = Inline,
             ClearTextOnFocus = false
         });
-        
-        local Title = framework["instance_manager"].new("TextLabel", {
+
+        local Title = Instance_manager.new("TextLabel", {
             Name = "title",
             FontFace = UI.font,
             TextColor3 = color3_rgb(255, 255, 255),
@@ -2086,7 +2089,7 @@ do -- menu
             UI.flags[textbox.Flag] = str;
             textbox.Callback(str);
         end
-    
+
         flags[textbox.Flag] = set;
         return textbox;
     end;
@@ -2105,8 +2108,8 @@ do -- menu
             Flag = Properties.flag or Properties.Flag or Properties.pointer or Properties.Pointer or UI.next_flag(),
             OptionInsts = {}
         };
-    
-        local NewList = framework["instance_manager"].new("TextButton", {
+
+        local NewList = Instance_manager.new("TextButton", {
             Name = "NewList",
             FontFace = UI.font,
             Text = "",
@@ -2121,15 +2124,15 @@ do -- menu
             Parent = Dropdown.Section.elements.section_content
         });
 
-        NewList.MouseEnter:Connect(function() 
+        NewList.MouseEnter:Connect(function()
             tween_service:Create(NewList, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {BackgroundColor3 = UI.themes.accent}):Play();
         end);
 
-        NewList.MouseLeave:Connect(function() 
+        NewList.MouseLeave:Connect(function()
             tween_service:Create(NewList, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {BackgroundColor3 = UI.themes.outline}):Play();
         end);
 
-        local ContentOutline = framework["instance_manager"].new("Frame", {
+        local ContentOutline = Instance_manager.new("Frame", {
             Name = "ContentOutline",
             AutomaticSize = Enum.AutomaticSize.Y,
             BackgroundColor3 = UI.themes.outline,
@@ -2138,12 +2141,12 @@ do -- menu
             Parent = NewList
         });
 
-        framework["instance_manager"].new("UICorner", {
+        Instance_manager.new("UICorner", {
             Parent = ContentOutline,
             CornerRadius = udim(0, 8),
         });
-    
-        local ContentInline = framework["instance_manager"].new("ScrollingFrame", {
+
+        local ContentInline = Instance_manager.new("ScrollingFrame", {
             Name = "ContentInline",
             AutomaticCanvasSize = Enum.AutomaticSize.Y,
             BottomImage = "rbxassetid://7783554086",
@@ -2160,25 +2163,25 @@ do -- menu
             Parent = ContentOutline
         });
 
-        framework["instance_manager"].new("UICorner", {
+        Instance_manager.new("UICorner", {
             Parent = ContentInline,
             CornerRadius = udim(0, 8),
         });
-    
-        framework["instance_manager"].new("UIListLayout", {
+
+        Instance_manager.new("UIListLayout", {
             Name = "UIListLayout",
             Padding = udim(0, 2),
             SortOrder = Enum.SortOrder.LayoutOrder,
             Parent = ContentInline
         });
-    
-        framework["instance_manager"].new("UIPadding", {
+
+        Instance_manager.new("UIPadding", {
             Name = "UIPadding",
             PaddingBottom = udim(0, 2),
             PaddingTop = udim(0, 2),
             Parent = ContentInline
         });
-    
+
         local function handleOptionClick(option, button, label)
             button.MouseButton1Down:Connect(function()
                 for _, opt in pairs(Dropdown.OptionInsts) do
@@ -2189,17 +2192,17 @@ do -- menu
                 Dropdown.Callback(option)
             end);
         end;
-    
+
         for _, option in ipairs(Dropdown.Options) do
-            local button = framework["instance_manager"].new("TextButton", {
+            local button = Instance_manager.new("TextButton", {
                 Name = "Option",
                 Text = "",
                 Size = udim2(1, 0, 0, 14),
                 BackgroundTransparency = 1,
                 Parent = ContentInline
             });
-    
-            local label = framework["instance_manager"].new("TextLabel", {
+
+            local label = Instance_manager.new("TextLabel", {
                 Text = option,
                 TextColor3 = UI.themes.inactive,
                 BackgroundTransparency = 1,
@@ -2209,30 +2212,30 @@ do -- menu
                 TextXAlignment = Enum.TextXAlignment.Left,
                 Position = udim2(0, 5, 0, 0),
                 Parent = button
-            });            
-    
+            });
+
             Dropdown.OptionInsts[option] = { label = label };
             handleOptionClick(option, button, label);
         end;
-    
+
         function Dropdown:Set(option)
             UI.flags[Dropdown.Flag] = option
             Dropdown.Callback(option)
         end;
-    
+
         function Dropdown:Refresh(options)
             for _, opt in pairs(Dropdown.OptionInsts) do opt.label.Parent:Destroy() end;
             Dropdown.OptionInsts = {}
             for _, option in ipairs(options) do
-                local button = framework["instance_manager"].new("TextButton", {
+                local button = Instance_manager.new("TextButton", {
                     Name = "Option",
                     Text = "",
                     Size = udim2(1, 0, 0, 14),
                     BackgroundTransparency = 1,
                     Parent = ContentInline
                 });
-        
-                local label = framework["instance_manager"].new("TextLabel", {
+
+                local label = Instance_manager.new("TextLabel", {
                     Text = option,
                     TextColor3 = UI.themes.inactive,
                     BackgroundTransparency = 1,
@@ -2242,18 +2245,18 @@ do -- menu
                     TextXAlignment = Enum.TextXAlignment.Left,
                     Position = udim2(0, 5, 0, 0),
                     Parent = button
-                });              
-    
+                });
+
                 Dropdown.OptionInsts[option] = { label = label }
                 handleOptionClick(option, button, label)
             end;
             Dropdown:Set(Dropdown.State)
         end;
-    
+
         Dropdown:Set(Dropdown.State);
         return Dropdown;
     end;
-    -- 
+    --
     function sections:colorpicker(Properties)
         local Properties = Properties or {};
         local Colorpicker = {
@@ -2272,7 +2275,7 @@ do -- menu
         local NewColor = Instance.new("TextButton");
         local Title = Instance.new("TextLabel");
         local Description = Instance.new("TextLabel");
-    
+
         do -- properties
             NewColor.Name = "NewColor"
             NewColor.FontFace = UI.font
@@ -2287,11 +2290,11 @@ do -- menu
             NewColor.Size = UDim2.new(1, 0, 0, 20)
             NewColor.Parent = Colorpicker.Section.elements.section_content
 
-            framework["instance_manager"].new("UICorner", {
+            Instance_manager.new("UICorner", {
                 Parent = NewColor;
                 CornerRadius = udim(0, 4);
             });
-        
+
             Title.Name = "Title"
             Title.FontFace = UI.font
             Title.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -2332,11 +2335,11 @@ do -- menu
             Colorpicker.Flag,
             Colorpicker.Callback
         );
-    
+
         function Colorpicker:Set(color)
             colorpickertypes:set(color, false, true);
         end;
-    
+
         function Colorpicker:colorpicker(Properties)
             local Properties = Properties or {};
             local NewColorpicker = {
@@ -2356,11 +2359,11 @@ do -- menu
                 NewColorpicker.Flag,
                 NewColorpicker.Callback
             );
-    
+
             function NewColorpicker:Set(color)
                 Newcolorpickertypes:Set(color);
             end;
-    
+
             return NewColorpicker;
         end
         return Colorpicker;
@@ -2386,14 +2389,14 @@ do -- menu
             ListValue = library.keybind_list:NewKey(Keybind.State, Keybind.Name)
         end]]
         --
-        local NewBind = framework["instance_manager"].new("Frame", {
+        local NewBind = Instance_manager.new("Frame", {
             Name = "NewBind",
             BackgroundTransparency = 1,
             Size = udim2(1, 0, 0, 15),
             Parent = Keybind.Section.elements.section_content
         });
-        
-        local Title = framework["instance_manager"].new("TextLabel", {
+
+        local Title = Instance_manager.new("TextLabel", {
             Name = "Title",
             FontFace = UI.font,
             TextColor3 = color3_rgb(255, 255, 255),
@@ -2405,8 +2408,8 @@ do -- menu
             Parent = NewBind,
             Text = Keybind.Name
         });
-        
-        local description = framework["instance_manager"].new("TextLabel", {
+
+        local description = Instance_manager.new("TextLabel", {
             Name = "description",
             FontFace = UI.font,
             TextColor3 = UI.themes.inactive,
@@ -2419,8 +2422,8 @@ do -- menu
             Position = udim2(0, 0, 0, 15),
             Text = Keybind.description
         });
-        
-        local Outline = framework["instance_manager"].new("Frame", {
+
+        local Outline = Instance_manager.new("Frame", {
             Name = "Keybind_Outline",
             AnchorPoint = vec2(1, 0.5),
             BackgroundColor3 = UI.themes.outline,
@@ -2428,13 +2431,13 @@ do -- menu
             Size = udim2(0, 65, 1.75, 0),
             Parent = NewBind
         });
-        
-        framework["instance_manager"].new("UICorner", {
+
+        Instance_manager.new("UICorner", {
             Parent = Outline,
             CornerRadius = udim(0, 3)
         });
-        
-        local Inline = framework["instance_manager"].new("TextButton", {
+
+        local Inline = Instance_manager.new("TextButton", {
             Name = "Keybind_Inline",
             BackgroundColor3 = UI.themes.background,
             Position = udim2(0, 1, 0, 1),
@@ -2446,13 +2449,13 @@ do -- menu
             AutoButtonColor = false,
             Parent = Outline
         });
-        
-        framework["instance_manager"].new("UICorner", {
+
+        Instance_manager.new("UICorner", {
             Parent = Inline,
             CornerRadius = udim(0, 3)
         });
-        
-        local Container = framework["instance_manager"].new("Frame", {
+
+        local Container = Instance_manager.new("Frame", {
             Name = "Container",
             BackgroundTransparency = 1,
             AnchorPoint = vec2(0.5, 0.5),
@@ -2461,19 +2464,19 @@ do -- menu
             AutomaticSize = Enum.AutomaticSize.X,
             Parent = Inline
         });
-        
-        local Icon = framework["instance_manager"].new("ImageLabel", {
+
+        local Icon = Instance_manager.new("ImageLabel", {
             Name = "Bind_Icon",
             Image = "http://www.roblox.com/asset/?id=16081386298",
             BackgroundTransparency = 1,
             ImageColor3 = UI.themes.inactive,
-            AnchorPoint = vec2(0, 0.5), 
+            AnchorPoint = vec2(0, 0.5),
             Position = udim2(0, 1, 0.5, 0),
-            Size = udim2(0, 20, 0, 20), 
+            Size = udim2(0, 20, 0, 20),
             Parent = Container
         });
 
-        local Value = framework["instance_manager"].new("TextLabel", {
+        local Value = Instance_manager.new("TextLabel", {
             Name = "Value",
             FontFace = UI.font,
             Text = "None",
@@ -2488,12 +2491,12 @@ do -- menu
             TextXAlignment = Enum.TextXAlignment.Left,
             Parent = Container
         });
-        Inline.Size = udim2(1, -2, 1, -2);  
+        Inline.Size = udim2(1, -2, 1, -2);
 
         Inline.MouseEnter:Connect(function()
             tween_service:Create(Outline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = UI.themes.accent}):Play()
         end)
-        
+
         Inline.MouseLeave:Connect(function()
             tween_service:Create(Outline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = UI.themes.outline}):Play()
         end)
@@ -2501,12 +2504,12 @@ do -- menu
         Inline.MouseEnter:Connect(function()
             tween_service:Create(Value, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = UI.themes.accent}):Play()
         end)
-        
+
         Inline.MouseLeave:Connect(function()
             tween_service:Create(Value, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = color3_rgb(255, 255, 255)}):Play()
         end)
-        
-        local ModeBox = framework["instance_manager"].new("Frame", {
+
+        local ModeBox = Instance_manager.new("Frame", {
             Name = "ModeBox",
             Parent = Outline,
             AnchorPoint = vec2(0,0.5),
@@ -2518,8 +2521,8 @@ do -- menu
             Visible = false,
             ZIndex = 99999
         });
-        
-        local Hold = framework["instance_manager"].new("TextButton", {
+
+        local Hold = Instance_manager.new("TextButton", {
             Name = "Hold",
             Parent = ModeBox,
             BackgroundTransparency = 1,
@@ -2531,8 +2534,8 @@ do -- menu
             TextSize = UI.font_size,
             TextStrokeTransparency = 0
         });
-        
-        local Toggle = framework["instance_manager"].new("TextButton", {
+
+        local Toggle = Instance_manager.new("TextButton", {
             Name = "Toggle",
             Parent = ModeBox,
             BackgroundTransparency = 1,
@@ -2545,8 +2548,8 @@ do -- menu
             TextSize = UI.font_size,
             TextStrokeTransparency = 0
         });
-        
-        local Always = framework["instance_manager"].new("TextButton", {
+
+        local Always = Instance_manager.new("TextButton", {
             Name = "Always",
             Parent = ModeBox,
             BackgroundTransparency = 1,
@@ -2598,7 +2601,7 @@ do -- menu
                         Keybind.Callback(Key)
                     end
                     local text = (UI.keys[newkey] or tostring(newkey):gsub("Enum.KeyCode.", ""))
-    
+
                     Value.Text = text
                     --[[if not Keybind.Ignore then
                         ListValue:Update(text, Keybind.Name)
@@ -2636,8 +2639,8 @@ do -- menu
         Inline.MouseButton1Click:Connect(function()
             if (not Keybind.Binding) then
                 Value.Text = "..."
-    
-                Keybind.Binding = framework:connection(uis.InputBegan, function(input, gpe)
+
+                Keybind.Binding = signals.connection(uis.InputBegan, function(input, gpe)
                     set( input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode or input.UserInputType )
                     Keybind.Binding:Disconnect()
                     task.wait()
@@ -2646,13 +2649,13 @@ do -- menu
             end
         end)
         --
-        framework:connection(uis.InputBegan, function(inp)
+        signals.connection(uis.InputBegan, function(inp)
             if (inp.KeyCode == Key or inp.UserInputType == Key) and not Keybind.Binding and not Keybind.UseKey then
                 if Keybind.Mode == "Hold" then
                     if Keybind.Flag then
                         UI.flags[Keybind.Flag] = true
                     end
-                    c = framework:connection(run_service.RenderStepped, LPH_NO_VIRTUALIZE(function()
+                    c = signals.connection(run_service.RenderStepped, LPH_NO_VIRTUALIZE(function()
                         if Keybind.Callback then
                             Keybind.Callback(true)
                         end
@@ -2673,7 +2676,7 @@ do -- menu
             end
         end)
         --
-        framework:connection(uis.InputEnded, function(inp)
+        signals.connection(uis.InputEnded, function(inp)
             if Keybind.Mode == "Hold" and not Keybind.UseKey then
                 if Key ~= "" or Key ~= nil then
                     if inp.KeyCode == Key or inp.UserInputType == Key then
@@ -2694,12 +2697,12 @@ do -- menu
             end
         end)
         --
-        framework:connection(Inline.MouseButton2Down, function()
+        signals.connection(Inline.MouseButton2Down, function()
             ModeBox.Visible = true
             NewBind.ZIndex = 5
         end)
         --
-        framework:connection(Hold.MouseButton1Down, function()
+        signals.connection(Hold.MouseButton1Down, function()
             set("Hold")
             Hold.TextColor3 = color3_rgb(255,255,255)
             Toggle.TextColor3 = color3_rgb(145,145,145)
@@ -2708,7 +2711,7 @@ do -- menu
             NewBind.ZIndex = 1
         end)
         --
-        framework:connection(Toggle.MouseButton1Down, function()
+        signals.connection(Toggle.MouseButton1Down, function()
             set("Toggle")
             Hold.TextColor3 = color3_rgb(145,145,145)
             Toggle.TextColor3 = color3_rgb(255,255,255)
@@ -2717,7 +2720,7 @@ do -- menu
             NewBind.ZIndex = 1
         end)
         --
-        framework:connection(Always.MouseButton1Down, function()
+        signals.connection(Always.MouseButton1Down, function()
             set("Always")
             Hold.TextColor3 = color3_rgb(145,145,145)
             Toggle.TextColor3 = color3_rgb(145,145,145)
@@ -2726,7 +2729,7 @@ do -- menu
             NewBind.ZIndex = 1
         end)
         --
-        framework:connection(uis.InputBegan, function(Input)
+        signals.connection(uis.InputBegan, function(Input)
             if ModeBox.Visible and Input.UserInputType == Enum.UserInputType.MouseButton1 then
                 local pos, size, mouse = ModeBox.AbsolutePosition, ModeBox.AbsoluteSize, get_mouse
                 if not (mouse.X >= pos.X and mouse.X <= pos.X + size.X and mouse.Y >= pos.Y and mouse.Y <= pos.Y + size.Y) then
@@ -2734,7 +2737,7 @@ do -- menu
                     NewBind.ZIndex = 1
                 end
             end
-        end)                
+        end)
         --
         UI.flags[Keybind.Flag .. "_KEY"] = Keybind.State
         UI.flags[Keybind.Flag .. "_KEY STATE"] = Keybind.Mode
@@ -2745,14 +2748,14 @@ do -- menu
         function Keybind:Set(key)
             set(key);
         end;
-    
+
         return Keybind;
     end;
 end;
 do -- open/close
     local old_camera_type = game:GetService("Workspace").CurrentCamera.CameraType;
     --
-    framework:connection(uis.InputBegan, function(input)
+    signals.connection(uis.InputBegan, function(input)
         if input.KeyCode == UI.ui_key then
             UI.autoload = not UI.autoload
             UI.menu_gui.Enabled = UI.autoload
@@ -2766,6 +2769,6 @@ do -- open/close
             end;
         end;
     end);
-end;    
+end;
 
-return UI, framework, fonts, found, black_bg, blur_effect;
+return {UI, framework, fonts, black_bg, blur_effect};
