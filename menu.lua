@@ -22,25 +22,6 @@ do -- checks
             makefolder("ENHANCEMENTS/LOADER/IMAGES");
         end;
     end;
-    --
-    do -- luarmor
-        if (not LPH_OBFUSCATED) then
-            function LPH_NO_VIRTUALIZE(f) return f end;
-            function LPH_JIT(...) return ... end;
-            function LPH_JIT_MAX(...) return ... end;
-            function LPH_NO_UPVALUES(f) return (function(...) return f(...) end) end;
-            function LPH_ENCSTR(...) return ... end;
-            function LPH_ENCNUM(...) return ... end;
-            function LPH_CRASH() return print(debug.traceback()) end;
-
-            LRM_IsUserPremium = false;
-            LRM_LinkedDiscordID = "1123144940071952394";
-            LRM_ScriptName = "visual enhancements";
-            LRM_TotalExecutions = 0;
-            LRM_SecondsLeft = math.huge;
-            LRM_UserNote = "Welcome, user!";
-        end;
-    end;
 end;
 -- math
 local udim2 = UDim2.new;
@@ -2655,11 +2636,11 @@ do -- menu
                     if Keybind.Flag then
                         UI.flags[Keybind.Flag] = true
                     end
-                    c = signals.connection(run_service.RenderStepped, LPH_NO_VIRTUALIZE(function()
+                    c = signals.connection(run_service.RenderStepped, function()
                         if Keybind.Callback then
                             Keybind.Callback(true)
                         end
-                    end))
+                    end)
                     --[[if not Keybind.Ignore then
                         ListValue:SetVisible(true)
                     end]]
