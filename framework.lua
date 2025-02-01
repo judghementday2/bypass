@@ -50,17 +50,17 @@ do -- functions
         signals.connection = function(signal, callback)
             local connection1 = signal:Connect(callback)
             table.insert(framework.connections, connection1)
-            return connection1
-        end
+            return connection1;
+        end;
 
         signals.unload = function()
-            for _, instance in pairs(framework.instances) do
-                instance:Destroy()
-            end
-        end
+            for _, instance in pairs(framework.connections) do
+                instance:Disconnect()
+            end;
+        end;
 
-        modules.signals = signals
-    end
+        modules.signals = signals;
+    end;
 end;
 
 return framework;
