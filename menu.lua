@@ -2734,8 +2734,6 @@ do -- menu
     end;
 end;
 do -- open/close
-    local old_camera_type = game:GetService("Workspace").CurrentCamera.CameraType;
-    --
     signals.connection(uis.InputBegan, function(input)
         if input.KeyCode == UI.ui_key then
             UI.autoload = not UI.autoload
@@ -2745,8 +2743,6 @@ do -- open/close
 
             if UI.autoload then
                 uis.MouseIconEnabled = true
-                camera.CameraType = old_camera_type
-                uis.MouseBehavior = Enum.MouseBehavior.Default
             end;
         end;
     end);
