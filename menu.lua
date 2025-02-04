@@ -2736,10 +2736,12 @@ end;
 do -- open/close
     signals.connection(uis.InputBegan, function(input)
         if input.KeyCode == UI.ui_key then
-            UI.autoload = not UI.autoload
-            UI.menu_gui.Enabled = UI.autoload
-            black_bg.Visible = UI.autoload
-            blur_effect.Size = UI.autoload and 20 or 0
+            pcall(function()
+                UI.autoload = not UI.autoload
+                UI.menu_gui.Enabled = UI.autoload
+                black_bg.Visible = UI.autoload
+                blur_effect.Size = UI.autoload and 20 or 0
+            end);
         end;
     end);
 end;
