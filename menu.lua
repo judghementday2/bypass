@@ -2740,10 +2740,6 @@ do -- open/close
             UI.menu_gui.Enabled = UI.autoload
             black_bg.Visible = UI.autoload
             blur_effect.Size = UI.autoload and 20 or 0
-
-            if UI.autoload then
-                uis.MouseIconEnabled = true
-            end;
         end;
     end);
 end;
