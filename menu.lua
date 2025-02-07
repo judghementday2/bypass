@@ -65,12 +65,6 @@ local fonts = {
         style = "normal",
         link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/ProggyTiny.ttf",
     }),
-    architype = create_font:register("ENHANCEMENTS/MENU/FONTS", {
-        name = "architype",
-        weight = "regular",
-        style = "normal",
-        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/Architype.ttf",
-    }),
     priv9 = create_font:register("ENHANCEMENTS/MENU/FONTS", {
         name = "priv9",
         weight = "regular",
