@@ -65,17 +65,17 @@ local fonts = {
         style = "normal",
         link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/ProggyTiny.ttf",
     }),
-    minipixel = create_font:register("ENHANCEMENTS/MENU/FONTS", {
-        name = "minipixel",
-        weight = "regular",
-        style = "normal",
-        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/mini_pixel-7.ttf",
-    }),
     priv9 = create_font:register("ENHANCEMENTS/MENU/FONTS", {
         name = "priv9",
         weight = "regular",
         style = "normal",
         link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/priv9.ttf",
+    }),
+    millennia = create_font:register("ENHANCEMENTS/MENU/FONTS", {
+        name = "millennia",
+        weight = "regular",
+        style = "normal",
+        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/millennia.ttf",
     }),
 };
 --
