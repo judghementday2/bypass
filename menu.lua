@@ -65,6 +65,18 @@ local fonts = {
         style = "normal",
         link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/ProggyTiny.ttf",
     }),
+    tahoma_bold = create_font:register("ENHANCEMENTS/MENU/FONTS", {
+        name = "tahoma bold",
+        weight = "regular",
+        style = "normal",
+        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/Tahoma-Bold.ttf",
+    }),
+    priv9 = create_font:register("ENHANCEMENTS/MENU/FONTS", {
+        name = "priv9",
+        weight = "regular",
+        style = "normal",
+        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/priv9.ttf",
+    }),
 };
 --
 local UI = ({
