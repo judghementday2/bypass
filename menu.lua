@@ -65,23 +65,29 @@ local fonts = {
         style = "normal",
         link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/ProggyTiny.ttf",
     }),
-    ["public pixel"] = create_font:register("ENHANCEMENTS/MENU/FONTS", {
-        name = "public pixel",
-        weight = "regular",
-        style = "normal",
-        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/PublicPixel-rv0pA.ttf",
-    }),
-    ticketing = create_font:register("ENHANCEMENTS/MENU/FONTS", {
-        name = "ticketing",
-        weight = "regular",
-        style = "normal",
-        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/ticketing.ttf",
-    }),
     medodica = create_font:register("ENHANCEMENTS/MENU/FONTS", {
         name = "medodica",
         weight = "regular",
         style = "normal",
         link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/MedodicaRegular.ttf",
+    }),
+    munro = create_font:register("ENHANCEMENTS/MENU/FONTS", {
+        name = "munro",
+        weight = "regular",
+        style = "normal",
+        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/Munro.ttf",
+    }),
+    lana_pixel = create_font:register("ENHANCEMENTS/MENU/FONTS", {
+        name = "lana pixel",
+        weight = "regular",
+        style = "normal",
+        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/LanaPixel.ttf",
+    }),
+    unicode = create_font:register("ENHANCEMENTS/MENU/FONTS", {
+        name = "unicode",
+        weight = "regular",
+        style = "normal",
+        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/Unicode.ttf",
     }),
 };
 --
