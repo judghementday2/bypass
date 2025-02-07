@@ -984,13 +984,15 @@ do -- menu
                 Parent = page.window.elements.holder;
             });
             --
-            local left = Instance_manager.new("Frame", {
+            local left = Instance_manager.new("ScrollingFrame", {
                 Name = "left";
                 BackgroundColor3 = UI.themes.background;
                 BorderColor3 = UI.themes.outline;
-                Size = udim2(0.33, -10, 1, 0);
+                Size = UDim2.new(0.33, -10, 1, 0);
+                CanvasSize = UDim2.new(0, 0, 2, 0);
+                ScrollBarThickness = 0;
                 Parent = new_page;
-            });
+            });   
 
             Instance_manager.new("UIListLayout", {
                 Name = "UIListLayout";
@@ -999,12 +1001,14 @@ do -- menu
                 Parent = left;
             });
             --
-            local center = Instance_manager.new("Frame", {
+            local center = Instance_manager.new("ScrollingFrame", {
                 Name = "center";
                 BackgroundColor3 = UI.themes.background;
                 BorderColor3 = UI.themes.outline;
                 Position = udim2(0.333, 3, 0, 0);
                 Size = udim2(0.333, -12, 1, 0);
+                CanvasSize = UDim2.new(0, 0, 2, 0);
+                ScrollBarThickness = 0;
                 Parent = new_page;
             });
             --
@@ -1015,12 +1019,14 @@ do -- menu
                 Parent = center;
             });
             --
-            local right = Instance_manager.new("Frame", {
+            local right = Instance_manager.new("ScrollingFrame", {
                 Name = "right";
                 BackgroundColor3 = UI.themes.background;
                 BorderColor3 = UI.themes.outline;
                 Position = udim2(0.666, 6, 0, 0);
                 Size = udim2(0.333, -4, 1, 0);
+                CanvasSize = UDim2.new(0, 0, 2, 0);
+                ScrollBarThickness = 0;
                 Parent = new_page;
             });
             --
