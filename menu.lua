@@ -65,6 +65,12 @@ local fonts = {
         style = "normal",
         link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/ProggyTiny.ttf",
     }),
+    gridtile = create_font:register("ENHANCEMENTS/MENU/FONTS", {
+        name = "gridtile",
+        weight = "regular",
+        style = "normal",
+        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/Gridtile.ttf",
+    }),
     priv9 = create_font:register("ENHANCEMENTS/MENU/FONTS", {
         name = "priv9",
         weight = "regular",
