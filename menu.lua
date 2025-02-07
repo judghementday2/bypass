@@ -69,7 +69,7 @@ local fonts = {
         name = "minipixel",
         weight = "regular",
         style = "normal",
-        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/mini_pixel-7.fon",
+        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/mini_pixel-7.ttf",
     }),
     priv9 = create_font:register("ENHANCEMENTS/MENU/FONTS", {
         name = "priv9",
