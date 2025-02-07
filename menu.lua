@@ -984,11 +984,6 @@ do -- menu
                 Parent = page.window.elements.holder;
             });
             --
-            local function updateCanvasSize(frame)
-                local contentSize = frame.UIListLayout.AbsoluteContentSize
-                frame.CanvasSize = UDim2.new(0, 0, 0, contentSize.Y > frame.AbsoluteSize.Y and contentSize.Y or frame.AbsoluteSize.Y)
-            end
-            
             local left = Instance_manager.new("ScrollingFrame", {
                 Name = "left";
                 BackgroundColor3 = UI.themes.background;
@@ -1006,8 +1001,13 @@ do -- menu
                 Parent = left;
             });
             
-            left.ChildAdded:Connect(function()
-                updateCanvasSize(left)
+            left:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+                local contentSize = left.UIListLayout.AbsoluteContentSize
+                if contentSize.Y > left.AbsoluteSize.Y then
+                    left.CanvasSize = UDim2.new(0, 0, 0, contentSize.Y)
+                else
+                    left.CanvasSize = UDim2.new(0, 0, 0, left.AbsoluteSize.Y)
+                end
             end)
             
             local center = Instance_manager.new("ScrollingFrame", {
@@ -1028,8 +1028,13 @@ do -- menu
                 Parent = center;
             });
             
-            center.ChildAdded:Connect(function()
-                updateCanvasSize(center)
+            center:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+                local contentSize = center.UIListLayout.AbsoluteContentSize
+                if contentSize.Y > center.AbsoluteSize.Y then
+                    center.CanvasSize = UDim2.new(0, 0, 0, contentSize.Y)
+                else
+                    center.CanvasSize = UDim2.new(0, 0, 0, center.AbsoluteSize.Y)
+                end
             end)
             
             local right = Instance_manager.new("ScrollingFrame", {
@@ -1050,8 +1055,13 @@ do -- menu
                 Parent = right;
             });
             
-            right.ChildAdded:Connect(function()
-                updateCanvasSize(right)
+            right:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+                local contentSize = right.UIListLayout.AbsoluteContentSize
+                if contentSize.Y > right.AbsoluteSize.Y then
+                    right.CanvasSize = UDim2.new(0, 0, 0, contentSize.Y)
+                else
+                    right.CanvasSize = UDim2.new(0, 0, 0, right.AbsoluteSize.Y)
+                end
             end)            
             --
             do -- auto-sizer
