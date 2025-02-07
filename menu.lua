@@ -65,11 +65,11 @@ local fonts = {
         style = "normal",
         link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/ProggyTiny.ttf",
     }),
-    tahoma_bold = create_font:register("ENHANCEMENTS/MENU/FONTS", {
-        name = "tahoma bold",
+    architype = create_font:register("ENHANCEMENTS/MENU/FONTS", {
+        name = "architype",
         weight = "regular",
         style = "normal",
-        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/Tahoma-Bold.ttf",
+        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/Architype.ttf",
     }),
     priv9 = create_font:register("ENHANCEMENTS/MENU/FONTS", {
         name = "priv9",
