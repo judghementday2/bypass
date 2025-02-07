@@ -990,26 +990,17 @@ do -- menu
                 BorderColor3 = UI.themes.outline;
                 Size = UDim2.new(0.33, -10, 1, 0);
                 ScrollBarThickness = 0;
-                CanvasSize = UDim2.new(0, 0, 0, 0);
+                AutomaticCanvasSize = Enum.AutomaticSize.Y; 
                 Parent = new_page;
             });
-            
+
             Instance_manager.new("UIListLayout", {
                 Name = "UIListLayout";
                 Padding = udim(0, 6);
                 SortOrder = Enum.SortOrder.LayoutOrder;
                 Parent = left;
             });
-            
-            left:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-                local contentSize = left.UIListLayout.AbsoluteContentSize
-                if contentSize.Y > left.AbsoluteSize.Y then
-                    left.CanvasSize = UDim2.new(0, 0, 0, contentSize.Y)
-                else
-                    left.CanvasSize = UDim2.new(0, 0, 0, left.AbsoluteSize.Y)
-                end
-            end)
-            
+
             local center = Instance_manager.new("ScrollingFrame", {
                 Name = "center";
                 BackgroundColor3 = UI.themes.background;
@@ -1017,26 +1008,17 @@ do -- menu
                 Position = udim2(0.333, 3, 0, 0);
                 Size = udim2(0.333, -12, 1, 0);
                 ScrollBarThickness = 0;
-                CanvasSize = UDim2.new(0, 0, 0, 0);
+                AutomaticCanvasSize = Enum.AutomaticSize.Y;
                 Parent = new_page;
             });
-            
+
             Instance_manager.new("UIListLayout", {
                 Name = "UIListLayout";
                 Padding = udim(0, 6);
                 SortOrder = Enum.SortOrder.LayoutOrder;
                 Parent = center;
             });
-            
-            center:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-                local contentSize = center.UIListLayout.AbsoluteContentSize
-                if contentSize.Y > center.AbsoluteSize.Y then
-                    center.CanvasSize = UDim2.new(0, 0, 0, contentSize.Y)
-                else
-                    center.CanvasSize = UDim2.new(0, 0, 0, center.AbsoluteSize.Y)
-                end
-            end)
-            
+
             local right = Instance_manager.new("ScrollingFrame", {
                 Name = "right";
                 BackgroundColor3 = UI.themes.background;
@@ -1044,25 +1026,16 @@ do -- menu
                 Position = udim2(0.666, 6, 0, 0);
                 Size = udim2(0.333, -4, 1, 0);
                 ScrollBarThickness = 0;
-                CanvasSize = UDim2.new(0, 0, 0, 0);
+                AutomaticCanvasSize = Enum.AutomaticSize.Y;
                 Parent = new_page;
             });
-            
+
             Instance_manager.new("UIListLayout", {
                 Name = "UIListLayout";
                 Padding = udim(0, 6);
                 SortOrder = Enum.SortOrder.LayoutOrder;
                 Parent = right;
             });
-            
-            right:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-                local contentSize = right.UIListLayout.AbsoluteContentSize
-                if contentSize.Y > right.AbsoluteSize.Y then
-                    right.CanvasSize = UDim2.new(0, 0, 0, contentSize.Y)
-                else
-                    right.CanvasSize = UDim2.new(0, 0, 0, right.AbsoluteSize.Y)
-                end
-            end)            
             --
             do -- auto-sizer
                 local tabs = {};
