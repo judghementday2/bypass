@@ -65,30 +65,6 @@ local fonts = {
         style = "normal",
         link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/ProggyTiny.ttf",
     }),
-    priv9 = create_font:register("ENHANCEMENTS/MENU/FONTS", {
-        name = "priv9",
-        weight = "regular",
-        style = "normal",
-        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/priv9.ttf",
-    }),
-    millennia = create_font:register("ENHANCEMENTS/MENU/FONTS", {
-        name = "millennia",
-        weight = "regular",
-        style = "normal",
-        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/millennia.ttf",
-    }),
-    gamer = create_font:register("ENHANCEMENTS/MENU/FONTS", {
-        name = "gamer",
-        weight = "regular",
-        style = "normal",
-        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/Gamer.ttf",
-    }),
-    pixellari = create_font:register("ENHANCEMENTS/MENU/FONTS", {
-        name = "pixellari",
-        weight = "regular",
-        style = "normal",
-        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/Pixellari.ttf",
-    }),
 };
 --
 local UI = ({
