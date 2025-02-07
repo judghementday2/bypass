@@ -984,23 +984,32 @@ do -- menu
                 Parent = page.window.elements.holder;
             });
             --
+            local function updateCanvasSize(frame)
+                local contentSize = frame.UIListLayout.AbsoluteContentSize
+                frame.CanvasSize = UDim2.new(0, 0, 0, contentSize.Y > frame.AbsoluteSize.Y and contentSize.Y or frame.AbsoluteSize.Y)
+            end
+            
             local left = Instance_manager.new("ScrollingFrame", {
                 Name = "left";
                 BackgroundColor3 = UI.themes.background;
                 BorderColor3 = UI.themes.outline;
                 Size = UDim2.new(0.33, -10, 1, 0);
                 ScrollBarThickness = 0;
-                AutomaticCanvasSize = Enum.AutomaticSize.Y; 
+                CanvasSize = UDim2.new(0, 0, 0, 0);
                 Parent = new_page;
             });
-
+            
             Instance_manager.new("UIListLayout", {
                 Name = "UIListLayout";
                 Padding = udim(0, 6);
                 SortOrder = Enum.SortOrder.LayoutOrder;
                 Parent = left;
             });
-
+            
+            left.ChildAdded:Connect(function()
+                updateCanvasSize(left)
+            end)
+            
             local center = Instance_manager.new("ScrollingFrame", {
                 Name = "center";
                 BackgroundColor3 = UI.themes.background;
@@ -1008,17 +1017,21 @@ do -- menu
                 Position = udim2(0.333, 3, 0, 0);
                 Size = udim2(0.333, -12, 1, 0);
                 ScrollBarThickness = 0;
-                AutomaticCanvasSize = Enum.AutomaticSize.Y;
+                CanvasSize = UDim2.new(0, 0, 0, 0);
                 Parent = new_page;
             });
-
+            
             Instance_manager.new("UIListLayout", {
                 Name = "UIListLayout";
                 Padding = udim(0, 6);
                 SortOrder = Enum.SortOrder.LayoutOrder;
                 Parent = center;
             });
-
+            
+            center.ChildAdded:Connect(function()
+                updateCanvasSize(center)
+            end)
+            
             local right = Instance_manager.new("ScrollingFrame", {
                 Name = "right";
                 BackgroundColor3 = UI.themes.background;
@@ -1026,16 +1039,20 @@ do -- menu
                 Position = udim2(0.666, 6, 0, 0);
                 Size = udim2(0.333, -4, 1, 0);
                 ScrollBarThickness = 0;
-                AutomaticCanvasSize = Enum.AutomaticSize.Y;
+                CanvasSize = UDim2.new(0, 0, 0, 0);
                 Parent = new_page;
             });
-
+            
             Instance_manager.new("UIListLayout", {
                 Name = "UIListLayout";
                 Padding = udim(0, 6);
                 SortOrder = Enum.SortOrder.LayoutOrder;
                 Parent = right;
             });
+            
+            right.ChildAdded:Connect(function()
+                updateCanvasSize(right)
+            end)            
             --
             do -- auto-sizer
                 local tabs = {};
