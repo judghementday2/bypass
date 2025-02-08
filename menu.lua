@@ -71,12 +71,6 @@ local fonts = {
         style = "normal",
         link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/MedodicaRegular.ttf",
     }),
-    lana_pixel = create_font:register("ENHANCEMENTS/MENU/FONTS", {
-        name = "lana pixel",
-        weight = "regular",
-        style = "normal",
-        link = "https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/LanaPixel.ttf",
-    }),
 };
 --
 local UI = ({
