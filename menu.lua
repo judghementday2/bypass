@@ -2474,7 +2474,7 @@ do -- menu
             Name = "Value",
             FontFace = UI.font,
             Text = "None",
-            TextColor3 = color3_rgb(255, 255, 255),
+            TextColor3 = color3_rgb(100, 100, 100),
             TextSize = UI.font_size,
             TextStrokeTransparency = 0,
             BackgroundTransparency = 1,
@@ -2493,6 +2493,14 @@ do -- menu
 
         Inline.MouseLeave:Connect(function()
             tween_service:Create(Inline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = UI.themes.background}):Play()
+        end)
+
+        Inline.MouseEnter:Connect(function()
+            tween_service:Create(Value, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = color3_rgb(200, 200, 200)}):Play()
+        end)
+
+        Inline.MouseLeave:Connect(function()
+            tween_service:Create(Value, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = color3_rgb(100, 100, 100)}):Play()
         end)
 
         local ModeBox = Instance_manager.new("Frame", {
