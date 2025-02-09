@@ -2488,19 +2488,11 @@ do -- menu
         Inline.Size = udim2(1, -2, 1, -2);
 
         Inline.MouseEnter:Connect(function()
-            tween_service:Create(Outline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = UI.themes.accent}):Play()
+            tween_service:Create(Inline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = UI.themes.accent}):Play()
         end)
 
         Inline.MouseLeave:Connect(function()
-            tween_service:Create(Outline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = UI.themes.outline}):Play()
-        end)
-
-        Inline.MouseEnter:Connect(function()
-            tween_service:Create(Value, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = UI.themes.accent}):Play()
-        end)
-
-        Inline.MouseLeave:Connect(function()
-            tween_service:Create(Value, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextColor3 = color3_rgb(255, 255, 255)}):Play()
+            tween_service:Create(Inline, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = UI.themes.background}):Play()
         end)
 
         local ModeBox = Instance_manager.new("Frame", {
@@ -2649,7 +2641,7 @@ do -- menu
                     if Keybind.Flag then
                         UI.flags[Keybind.Flag] = true
                     end
-                    c = signals.connection(run_service.RenderStepped, function()
+                    signals.connection(run_service.RenderStepped, function()
                         if Keybind.Callback then
                             Keybind.Callback(true)
                         end
