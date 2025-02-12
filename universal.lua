@@ -1,1 +1,1 @@
-print("universal")
+print"universal"
