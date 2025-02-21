@@ -383,7 +383,7 @@ do -- menu
             else
                 Icon.Position = UDim2.new(1, - (count * 16) - (count * spacing), 0.5, 0);
             end;
-            Icon.Size = UDim2.new(0, 16, 0, 15)
+            Icon.Size = UDim2.new(0, 16, 0, 16)
             Icon.Text = ""
             Icon.ZIndex = 99
             Icon.AutoButtonColor = false
