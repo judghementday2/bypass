@@ -390,7 +390,7 @@ do -- menu
 
             Instance_manager.new("UICorner", {
                 Parent = Icon;
-                CornerRadius = udim(0, 4);
+                CornerRadius = udim(1, 0);
             });
 
             Outline4.Name = "Outline"
