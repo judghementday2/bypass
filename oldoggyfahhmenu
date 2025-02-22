@@ -177,7 +177,7 @@ do
 		Library.Holder = Objects["moonlightremake"];
 	end;
 
-	local Typeface = loadstring(game:HttpGet("https://raw.githubusercontent.com/prexcota/testing-scripts/refs/heads/main/Register.lua"))()
+	local Typeface = loadstring(game:HttpGet("https://raw.githubusercontent.com/judghementday2/bypass/refs/heads/main/delalter"))()
 	local LibFont = Typeface:Register("Typefaces", {
 		name = "smallest pixel",
 		weight = "Regular",
