@@ -75,8 +75,8 @@ local fonts = {
 --
 local UI = ({
     autoload = true,
-    font = fonts.proggytiny,
-    font_size = 9;
+    font = Font.new([[rbxassetid://12187365977]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
+    font_size = 12;
     ui_key = Enum.KeyCode.Delete,
     menu_gui = nil,
     watermark_gui = nil,
