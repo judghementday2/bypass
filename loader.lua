@@ -16,7 +16,7 @@ game_list['phantom forces'] = {
     executors = { 'AWP', 'Wave', 'Nihon', 'MacSploit' }
 };
 game_list['fallen survival'] = {
-    status    = 'updating',
+    status    = 'undetected',
     executors = { 'AWP', 'Wave' }
 };
 game_list['trident survival'] = {
