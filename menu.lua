@@ -76,11 +76,35 @@ local fonts = {
 local UI = ({
     autoload = true,
     font = Font.new([[rbxassetid://12187365977]], Enum.FontWeight.SemiBold, Enum.FontStyle.Normal),
-    font_size = 12;
+    font_size = 12,
     ui_key = Enum.KeyCode.Delete,
     menu_gui = nil,
     watermark_gui = nil,
-    themes = ({ accent = color3_rgb(131,135,250), risky = color3_rgb(85, 0, 0), background = color3_rgb(7,7,8), outline = color3_rgb(15,15,16), inactive = color3_rgb(69,69,70) }),
+    themes = {
+        original = {
+            accent = color3_rgb(131, 135, 250),
+            risky = color3_rgb(85, 0, 0),
+            background = color3_rgb(7, 7, 8),
+            outline = color3_rgb(15, 15, 16),
+            inactive = color3_rgb(69, 69, 70)
+        },
+        fatality = {
+            accent = color3_rgb(255, 0, 0),
+            risky = color3_rgb(120, 0, 0),
+            background = color3_rgb(30, 30, 30),
+            outline = color3_rgb(50, 50, 50),
+            inactive = color3_rgb(100, 100, 100)
+        },
+        gamesense = {
+            accent = color3_rgb(0, 255, 0),
+            risky = color3_rgb(0, 120, 0),
+            background = color3_rgb(10, 10, 10),
+            outline = color3_rgb(20, 20, 20),
+            inactive = color3_rgb(80, 80, 80)
+        }
+    },
+    instancemap = {},
+
     keys = {
         [Enum.KeyCode.LeftShift] = "L-SHIFT", [Enum.KeyCode.RightShift] = "R-SHIFT", [Enum.KeyCode.LeftControl] = "L-CTRL",
         [Enum.KeyCode.RightControl] = "R-CTRL", [Enum.KeyCode.LeftAlt] = "L-ALT", [Enum.KeyCode.RightAlt] = "R-ALT",
@@ -100,13 +124,40 @@ local UI = ({
     user_data = {
         username = (user or "User"),
         uid = 1
-    };
+    },
     shared = {
         initialized = false,
         fps = 0,
         ping = 0
     },
-});
+})
+
+function UI:LoadTheme(theme)
+    if not self.themes[theme] then
+        warn("Theme not found: " .. theme)
+        return
+    end
+
+    for obj, data in pairs(self.instancemap) do
+        if obj and obj:IsA("Instance") then
+            for property, themeKey in pairs(data.Properties) do
+                if self.themes[theme][themeKey] then
+                    obj[property] = self.themes[theme][themeKey]
+                end
+            end
+        end
+    end
+end
+
+function UI:AttachTheme(obj, props)
+    self.instancemap[obj] = { Instance = obj, Properties = props }
+
+    for property, themeKey in pairs(props) do
+        if self.themes.original[themeKey] then
+            obj[property] = self.themes.original[themeKey]
+        end
+    end
+end
 --
 local flags = {};
 UI.__index = UI;
@@ -996,7 +1047,7 @@ do -- menu
                 BorderColor3 = UI.themes.outline;
                 Size = UDim2.new(0.33, -10, 1, 0);
                 ScrollBarThickness = 0;
-                AutomaticCanvasSize = Enum.AutomaticSize.Y; 
+                AutomaticCanvasSize = Enum.AutomaticSize.Y;
                 Parent = new_page;
             });
 
