@@ -17,7 +17,7 @@ game_list['phantom forces'] = {
 };
 game_list['fallen survival'] = {
     status    = 'undetected',
-    executors = { 'Potassium', 'AWP', 'Wave' }
+    executors = { 'SirHurt', 'Potassium', 'AWP', 'Wave' }
 };
 game_list['trident survival'] = {
     status    = 'updating',
