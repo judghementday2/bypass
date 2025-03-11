@@ -313,8 +313,8 @@ do -- other
         Visible = UI.autoload;
         BackgroundTransparency = 0.35;
         Parent = cloneref(Instance.new("ScreenGui", gethui()));
+        BorderColor3 = color3_rgb(0, 0, 0),
     });
-    UI:AttachTheme(black_bg, { BorderColor3 = "outline" })
 end
 --
 do -- menu
