@@ -1349,11 +1349,10 @@ do -- menu
             BorderSizePixel = 0;
             Position = udim2(0, 0, 0, 0);
             Size = udim2(1, 0, 1, 0);
+            TextColor3 = toggle.risk and color3_rgb(125, 0, 0) or color3_rgb(255, 255, 255);
             Parent = new_toggle;
             Text = toggle.name;
         });
-
-        UI:AttachTheme(some_text, { TextColor3 = toggle.risk and "risky" or color3_rgb(255, 255, 255) })
 
         local some_text2 = Instance_manager.new("TextLabel", {
             Name = "description";
@@ -1380,15 +1379,15 @@ do -- menu
             toggle.callback(toggle.toggled);
             --
             tween_service:Create(toggle_bg, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { 
-                BackgroundColor3 = UI:AttachTheme(toggle_bg, { BackgroundColor3 = toggle.toggled and "accent" or "outline" })
-            }):Play()
+                BackgroundColor3 = toggle.toggled and UI:AttachTheme(toggle_bg, { BackgroundColor3 = "accent" }) or UI:AttachTheme(toggle_bg, { BackgroundColor3 = "outline" })
+            }):Play()            
             
             tween_service:Create(accent_bg, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { 
                 Position = toggle.toggled and udim2(1, -18, 0.5, -8) or udim2(0, 2, 0.5, -8)
             }):Play()
             
             tween_service:Create(accent_bg, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), { 
-                BackgroundColor3 = UI:AttachTheme(accent_bg, { BackgroundColor3 = toggle.toggled and Color3.fromRGB(200, 200, 200) or "inactive" })
+                BackgroundColor3 = toggle.toggled and Color3.fromRGB(200, 200, 200) or UI:AttachTheme(accent_bg, { BackgroundColor3 = "inactive" })
             }):Play()
         end
         signals.connection(new_toggle.MouseButton1Down, set_state);
