@@ -312,7 +312,7 @@ do -- other
         BackgroundColor3 = color3_rgb(0, 0, 0);
         Visible = UI.autoload;
         BackgroundTransparency = 0.35;
-        Parent = cloneref(Instance.new("ScreenGui", gethui()));
+        Parent = game:GetService("CoreGui");
         BorderColor3 = color3_rgb(0, 0, 0),
     });
 end
@@ -882,6 +882,7 @@ do -- menu
                 Position = udim2(0.5, 0, 0.5, 0);
                 BorderSizePixel = 1;
                 Size = window.size;
+                ZIndex = 9999;
             });
 
             UI:AttachTheme(background, { BackgroundColor3 = "background" })
