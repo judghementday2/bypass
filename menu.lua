@@ -866,7 +866,7 @@ do -- menu
             };
             --
             local menu = Instance_manager.new("ScreenGui", {
-                Name = "menu";
+                Name = "visual menu";
                 Parent = cloneref(gethui());
                 IgnoreGuiInset = Enum.ScreenInsets.DeviceSafeInsets;
                 ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
