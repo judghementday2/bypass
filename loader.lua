@@ -17,7 +17,7 @@ game_list['phantom forces'] = {
 };
 game_list['fallen survival'] = {
     status    = 'undetected',
-    executors = { 'SirHurt', 'Potassium', 'AWP', 'Wave' }
+    executors = { 'Potassium', 'AWP', 'Wave' }
 };
 game_list['trident survival'] = {
     status    = 'updating',
@@ -25,7 +25,7 @@ game_list['trident survival'] = {
 };
 game_list['rivals'] = {
     status    = 'updating',
-    executors = { 'AWP', 'Wave', 'Nihon', 'MacSploit' }
+    executors = { 'SirHurt', 'Potassium', 'AWP', 'Wave', 'Nihon', 'MacSploit' }
 };
 
 local load_game = function(game_name, game_list, status, executor)
