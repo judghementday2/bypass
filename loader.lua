@@ -17,15 +17,15 @@ game_list['phantom forces'] = {
 };
 game_list['fallen survival'] = {
     status    = 'undetected',
-    executors = { 'Potassium', 'AWP', 'Wave' }
+    executors = { 'AWP', 'Wave', 'MacSploit' }
 };
 game_list['trident survival'] = {
     status    = 'updating',
-    executors = { 'AWP', 'Wave' }
+    executors = { 'AWP', 'Wave', 'MacSploit' }
 };
 game_list['rivals'] = {
     status    = 'updating',
-    executors = { 'SirHurt', 'Potassium', 'AWP', 'Wave', 'Nihon', 'MacSploit' }
+    executors = { 'AWP', 'Wave', 'Nihon', 'MacSploit' }
 };
 
 local load_game = function(game_name, game_list, status, executor)
@@ -34,7 +34,7 @@ local load_game = function(game_name, game_list, status, executor)
     for v, data in pairs(game_list) do
         if game_name:find(v:lower(), 1, true) then
             if (data.status == 'updating') then
-                status["LocalPlayer"]:Kick('[visual enhancements] ' .. v .. " script is updating.");
+                status["LocalPlayer"]:Kick('[Solahub] ' .. v .. " script is updating.");
                 return;
             end;
             for _, exec in ipairs(data.executors) do
@@ -42,7 +42,7 @@ local load_game = function(game_name, game_list, status, executor)
                     return v;
                 end;
             end;
-            status["LocalPlayer"]:Kick('[visual enhancements] Executor not supported.');
+            status["LocalPlayer"]:Kick('[Solahub] Executor not supported.');
             return;
         end;
     end;
