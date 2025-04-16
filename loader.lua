@@ -13,19 +13,19 @@ local path          = "https://raw.githubusercontent.com/judghementday2/bypass/r
 local game_list = {};
 game_list['phantom forces'] = {
     status    = 'updating',
-    executors = { 'AWP', 'Wave', 'Nihon', 'MacSploit' }
+    executors = { 'AWP', 'Wave', 'Nihon', 'MacSploit', 'Swift' }
 };
 game_list['fallen survival'] = {
     status    = 'undetected',
-    executors = { 'AWP', 'Wave', 'MacSploit' }
+    executors = { 'AWP', 'Wave', 'MacSploit', 'Swift' }
 };
 game_list['trident survival'] = {
     status    = 'updating',
-    executors = { 'AWP', 'Wave', 'MacSploit' }
+    executors = { 'AWP', 'Wave', 'MacSploit', 'Swift' }
 };
 game_list['rivals'] = {
     status    = 'updating',
-    executors = { 'AWP', 'Wave', 'Nihon', 'MacSploit' }
+    executors = { 'AWP', 'Wave', 'Nihon', 'MacSploit', 'Swift' }
 };
 
 local load_game = function(game_name, game_list, status, executor)
