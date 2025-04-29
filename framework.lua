@@ -53,6 +53,10 @@ do -- functions
             return connection1;
         end;
 
+        signals.lerp = function(a, b, t)
+            return a + (b - a) * t
+        end
+
         signals.unload = function()
             for _, instance in pairs(framework.connections) do
                 instance:Disconnect()
